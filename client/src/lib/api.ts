@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // Create an Axios instance pointing to your Backend URL
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api', // Ensure this matches your Server PORT
+  baseURL: 'https://placement-management-system-a1kw.onrender.com/api', // Ensure this matches your Server PORT
   headers: {
     'Content-Type': 'application/json',
   },
