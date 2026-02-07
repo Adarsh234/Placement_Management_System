@@ -11,7 +11,7 @@
 
 <div align="center">
 
-![PIMS Dashboard Preview](<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/e5e774c7-f945-499d-98a4-80c9b6e03e67" />)
+![PIMS Dashboard Preview]<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/e5e774c7-f945-499d-98a4-80c9b6e03e67" />
 **A centralized platform streamlining campus recruitment for Students, Companies, and Administrators.**
 
 [View Demo](#) · [Report Bug](#) · [Request Feature](#)
