@@ -1,8 +1,17 @@
 # 🎓 PIMS - Placement Information Management System
 
+![GitHub language count](https://img.shields.io/github/languages/count/Adarsh234/Placement_Management_System)
+![GitHub top language](https://img.shields.io/github/languages/top/Adarsh234/Placement_Management_System)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat&logo=tailwind-css)
+![Vercel Deploy](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)
+![GitHub last commit](https://img.shields.io/github/last-commit/Adarsh234/Placement_Management_System)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
+
 <div align="center">
 
-![PIMS Dashboard Preview](https://via.placeholder.com/1200x600.png?text=PIMS+Dashboard+Preview)
+![PIMS Dashboard Preview](<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/e5e774c7-f945-499d-98a4-80c9b6e03e67" />)
 **A centralized platform streamlining campus recruitment for Students, Companies, and Administrators.**
 
 [View Demo](#) · [Report Bug](#) · [Request Feature](#)
