@@ -37,24 +37,47 @@ export default function ServerWaker() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-slate-950/80 backdrop-blur-sm"
+          className="fixed inset-0 z-9999 flex flex-col items-center justify-center backdrop-blur-sm transition-colors duration-300
+            bg-stone-50/90 dark:bg-slate-950/90"
         >
-          <div className="bg-slate-900 p-8 rounded-2xl shadow-2xl border border-slate-800 flex flex-col items-center text-center max-w-sm mx-4">
+          <div
+            className="p-8 rounded-2xl shadow-2xl border flex flex-col items-center text-center max-w-sm mx-4 transition-colors duration-300
+            bg-white border-stone-200 
+            dark:bg-slate-900 dark:border-slate-800"
+          >
             <div className="relative mb-6">
-              <div className="absolute inset-0 bg-blue-500/20 rounded-full blur-xl animate-pulse" />
-              <Loader2 className="w-12 h-12 text-blue-500 animate-spin relative z-10" />
+              <div
+                className="absolute inset-0 rounded-full blur-xl animate-pulse transition-colors duration-300
+                bg-emerald-500/20 dark:bg-blue-500/20"
+              />
+              <Loader2
+                className="w-12 h-12 animate-spin relative z-10 transition-colors duration-300
+                text-emerald-600 dark:text-blue-500"
+              />
             </div>
 
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3
+              className="text-xl font-bold mb-2 transition-colors duration-300
+              text-stone-900 dark:text-white"
+            >
               Waking up the Server...
             </h3>
-            <p className="text-slate-400 text-sm">
+            <p
+              className="text-sm transition-colors duration-300
+              text-stone-500 dark:text-slate-400"
+            >
               Since this is a free hosting tier, the server needs a moment to
               wake up from sleep mode. This usually takes about 30-50 seconds.
             </p>
 
-            <div className="mt-6 w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
-              <div className="h-full bg-blue-500 animate-[progress_40s_ease-in-out_forwards] w-0" />
+            <div
+              className="mt-6 w-full h-1.5 rounded-full overflow-hidden transition-colors duration-300
+              bg-stone-100 dark:bg-slate-800"
+            >
+              <div
+                className="h-full w-0 animate-[progress_40s_ease-in-out_forwards] transition-colors duration-300
+                bg-emerald-500 dark:bg-blue-500"
+              />
             </div>
           </div>
         </motion.div>
