@@ -12,7 +12,7 @@ export default function DashboardLayout({
 
   const handleLogout = () => {
     localStorage.clear()
-    router.replace('/auth/login') // Use replace to prevent "Back" button return
+    router.replace('/') // Use replace to prevent "Back" button return
   }
 
   return (

@@ -2,6 +2,9 @@
 import { useEffect, useState } from 'react'
 import API from '@/lib/api'
 import { motion, AnimatePresence } from 'framer-motion'
+// 1. Import SweetAlert2
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 import {
   Search,
   Briefcase,
@@ -16,6 +19,9 @@ import {
   Loader2,
   MapPin,
 } from 'lucide-react'
+
+// 2. Initialize the wrapper
+const MySwal = withReactContent(Swal)
 
 export default function StudentDashboard() {
   const [jobs, setJobs] = useState<any[]>([])
@@ -33,17 +39,6 @@ export default function StudentDashboard() {
     cgpa: '',
     skills: '',
   })
-
-  // Animation variants
-  const container = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  }
-
-  const item = {
-    hidden: { y: 20, opacity: 0 },
-    show: { y: 0, opacity: 1 },
-  }
 
   useEffect(() => {
     loadJobs()
@@ -92,9 +87,28 @@ export default function StudentDashboard() {
   const handleApply = async (jobId: number) => {
     try {
       await API.post('/jobs/apply', { jobId })
-      alert('Application Submitted Successfully! Good luck.')
+
+      // ✅ SUCCESS POPUP
+      MySwal.fire({
+        icon: 'success',
+        title: 'Application Sent!',
+        text: 'Good luck! The company has received your application.',
+        background: '#1e293b',
+        color: '#fff',
+        confirmButtonColor: '#3b82f6',
+        iconColor: '#3b82f6',
+      })
     } catch (err) {
-      alert('You have already applied to this position.')
+      // ⚠️ ERROR POPUP
+      MySwal.fire({
+        icon: 'warning',
+        title: 'Already Applied',
+        text: 'You have already submitted an application for this position.',
+        background: '#1e293b',
+        color: '#fff',
+        confirmButtonColor: '#fbbf24',
+        iconColor: '#fbbf24',
+      })
     }
   }
 
@@ -113,11 +127,33 @@ export default function StudentDashboard() {
         cgpa: profile.cgpa,
         skills: skillsArray,
       })
-      alert('Profile Updated Successfully!')
+
       setIsProfileOpen(false)
+
+      // ✅ SUCCESS POPUP
+      MySwal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Profile Updated Successfully',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        background: '#1e293b',
+        color: '#fff',
+        iconColor: '#22c55e',
+      })
     } catch (err) {
       console.error(err)
-      alert('Failed to update profile.')
+      // ❌ FAILURE POPUP
+      MySwal.fire({
+        icon: 'error',
+        title: 'Update Failed',
+        text: 'Something went wrong while saving your profile. Please try again.',
+        background: '#1e293b',
+        color: '#fff',
+        confirmButtonColor: '#ef4444',
+      })
     } finally {
       setIsSavingProfile(false)
     }
@@ -340,7 +376,6 @@ export default function StudentDashboard() {
                         {job.company_name || 'Unnamed Company'}
                       </p>
 
-                      {/* --- NEW: DISPLAY LOCATION --- */}
                       {job.location && (
                         <div className="flex items-center gap-1 mt-1 text-xs text-slate-500">
                           <MapPin size={12} /> {job.location}
