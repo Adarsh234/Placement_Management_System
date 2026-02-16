@@ -21,9 +21,13 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-      className="relative p-2 rounded-lg transition-all duration-300 border focus:outline-none focus:ring-2 focus:ring-blue-500
-        bg-white border-stone-200 hover:bg-stone-100 text-stone-800
-        dark:bg-slate-900 dark:border-slate-800 dark:hover:bg-slate-800 dark:text-slate-200"
+      className="relative p-2 transition-all duration-300 border focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-white/50
+        /* Light Mode: Clean, Rounded, Soft Stone */
+        rounded-lg bg-white border-stone-200 hover:bg-stone-100 text-stone-800
+        
+        /* Dark Mode: Brutalist, Sharp, Ghost/Wireframe */
+        dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-white 
+        dark:hover:bg-white/10 dark:hover:border-white/50"
       aria-label="Toggle Theme"
     >
       <div className="relative w-5 h-5">

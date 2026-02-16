@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-// 1. Import Theme Toggle
 import { ThemeToggle } from '@/components/ThemeToggle'
 import {
   Briefcase,
@@ -19,43 +18,44 @@ const fadeInUp = {
 
 export default function Home() {
   return (
-    // MAIN CONTAINER: Stone-50 (Light) vs Slate-950 (Dark)
+    // MAIN CONTAINER
+    // Light: Stone-50 (Classic Clean)
+    // Dark: #050505 (Deepest Charcoal/Black - Brutalist Base)
     <div
-      className="min-h-screen overflow-hidden relative transition-colors duration-300 selection:bg-blue-500/30
+      className="min-h-screen overflow-hidden relative transition-colors duration-300 selection:bg-emerald-500/30 dark:selection:bg-white/90 dark:selection:text-black
       bg-stone-50 text-stone-900 
-      dark:bg-slate-950 dark:text-white"
+      dark:bg-[#050505] dark:text-white"
     >
-      {/* --- Background Gradient Spotlights --- */}
+      {/* --- Background Spotlights (Subtle Fog in Dark Mode) --- */}
       <div
         className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500
         bg-emerald-500/10 
-        dark:bg-blue-500/20"
+        dark:bg-white/5"
       />
       <div
         className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500
         bg-stone-500/10 
-        dark:bg-purple-500/10"
+        dark:bg-white/5"
       />
 
       {/* --- Navbar --- */}
       <nav className="absolute top-0 w-full p-6 flex justify-between items-center max-w-7xl mx-auto left-0 right-0 z-50">
         <div
-          className="text-2xl font-bold tracking-tighter transition-colors
+          className="text-2xl font-black tracking-tighter transition-colors
           text-emerald-700 
-          dark:text-blue-500"
+          dark:text-white dark:tracking-widest"
         >
           PIMS.
         </div>
 
-        <div className="flex items-center gap-4">
-          {/* Theme Toggle */}
+        <div className="flex items-center gap-6">
           <ThemeToggle />
 
           <Link
             href="/auth/login?role=admin"
-            className="text-sm font-medium transition-colors
+            className="text-xs font-bold uppercase tracking-[0.2em] transition-colors
               text-stone-600 hover:text-stone-900
-              dark:text-slate-400 dark:hover:text-white"
+              dark:text-neutral-500 dark:hover:text-white"
           >
             Admin Portal
           </Link>
@@ -68,42 +68,42 @@ export default function Home() {
           initial="hidden"
           animate="visible"
           transition={{ staggerChildren: 0.1 }}
-          className="text-center max-w-5xl mx-auto space-y-8"
+          className="text-center max-w-5xl mx-auto space-y-10"
         >
-          {/* Badge */}
+          {/* Badge: Sharp edges, high contrast uppercase */}
           <motion.div
             variants={fadeInUp}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-sm font-medium transition-colors
-              bg-emerald-100/50 border-emerald-200 text-emerald-700
-              dark:bg-blue-500/10 dark:border-blue-500/20 dark:text-blue-400"
+            className="inline-flex items-center gap-3 px-4 py-2 border text-[10px] font-bold uppercase tracking-[0.25em] transition-all
+              rounded-full bg-emerald-100/50 border-emerald-200 text-emerald-700
+              dark:rounded-none dark:bg-white/5 dark:border-white/10 dark:text-neutral-200"
           >
-            <span className="relative flex h-2 w-2">
+            <span className="relative flex h-1.5 w-1.5">
               <span
                 className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75
                 bg-emerald-400 
-                dark:bg-blue-400"
+                dark:bg-white"
               ></span>
               <span
-                className="relative inline-flex rounded-full h-2 w-2
+                className="relative inline-flex rounded-full h-1.5 w-1.5
                 bg-emerald-500 
-                dark:bg-blue-500"
+                dark:bg-white"
               ></span>
             </span>
-            v2.0 Now Live
+            System Online v2.0
           </motion.div>
 
-          {/* Heading */}
+          {/* Heading: Geometric Sans-Serif, Massive Impact */}
           <motion.h1
             variants={fadeInUp}
-            className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-linear-to-r
-              from-stone-900 via-stone-700 to-stone-500
-              dark:from-white dark:via-slate-200 dark:to-slate-400"
+            className="text-5xl md:text-8xl font-black tracking-tight
+            text-stone-900
+            dark:text-white dark:uppercase dark:tracking-tighter dark:leading-[0.9]"
           >
-            Campus Recruitment <br />
+            Campus <br /> Recruitment <br />
             <span
               className="
               text-emerald-700 
-              dark:text-white"
+              dark:text-neutral-600"
             >
               Simplified.
             </span>
@@ -111,46 +111,44 @@ export default function Home() {
 
           <motion.p
             variants={fadeInUp}
-            className="text-lg md:text-xl max-w-2xl mx-auto leading-relaxed transition-colors
-              text-stone-600 
-              dark:text-slate-400"
+            className="text-lg md:text-xl max-w-xl mx-auto leading-relaxed transition-colors
+            text-stone-600 
+            dark:text-neutral-400 dark:font-medium dark:text-sm dark:uppercase dark:tracking-widest"
           >
             The centralized platform connecting ambitious students with top-tier
-            companies. Automate applications, track interviews, and manage
-            placements in one place.
+            companies.
           </motion.p>
 
           <motion.div
             variants={fadeInUp}
-            className="flex flex-wrap gap-4 justify-center mt-8"
+            className="flex flex-wrap gap-6 justify-center mt-12"
           >
-            {/* Student Login Button */}
+            {/* Student Login Button: Solid White Block in Dark Mode */}
             <Link href="/auth/login?role=student">
               <button
-                className="group relative flex items-center gap-3 px-8 py-4 rounded-full font-bold text-white shadow-lg transition-all duration-300 hover:scale-105
-                bg-emerald-600 shadow-emerald-500/20 hover:bg-emerald-500
-                dark:bg-blue-600 dark:shadow-blue-500/20 dark:hover:bg-blue-500"
+                className="group relative flex items-center gap-4 px-8 py-4 font-bold transition-all duration-300
+                rounded-full bg-emerald-600 text-white shadow-lg hover:bg-emerald-500 hover:scale-105 shadow-emerald-500/20
+                
+                /* Dark Mode: Sharp, Solid White, Black Text (High Contrast) */
+                dark:rounded-none dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-neutral-200 dark:hover:scale-100 dark:uppercase dark:tracking-widest dark:text-xs"
               >
-                <UserCheck size={20} />
                 Student Login
                 <ArrowRight
                   size={16}
-                  className="opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all"
+                  className="opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all text-black"
                 />
               </button>
             </Link>
 
-            {/* Company Login Button */}
+            {/* Company Login Button: Ghost/Outline in Dark Mode */}
             <Link href="/auth/login?role=company">
               <button
-                className="group relative flex items-center gap-3 px-8 py-4 border rounded-full font-bold transition-all duration-300
-                bg-white border-stone-200 text-stone-700 hover:bg-stone-50 hover:border-stone-300
-                dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700 dark:hover:border-slate-600"
+                className="group relative flex items-center gap-4 px-8 py-4 border font-bold transition-all duration-300
+                rounded-full bg-white border-stone-200 text-stone-700 hover:bg-stone-50 hover:border-stone-300
+                
+                /* Dark Mode: Sharp, Ghost Button, White Border */
+                dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-white dark:hover:bg-white/5 dark:hover:border-white/50 dark:uppercase dark:tracking-widest dark:text-xs"
               >
-                <Building2
-                  size={20}
-                  className="text-purple-500 dark:text-purple-400"
-                />
                 Recruiter Portal
               </button>
             </Link>
@@ -163,48 +161,33 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-32 max-w-6xl w-full"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-32 max-w-7xl w-full"
         >
           <FeatureCard
-            icon={
-              <UserCheck
-                size={32}
-                className="text-emerald-600 dark:text-blue-500"
-              />
-            }
+            icon={<UserCheck size={32} strokeWidth={1.5} />}
             title="For Students"
             desc="Build your profile, upload resumes, and apply to unlimited drives with a single click."
           />
           <FeatureCard
-            icon={
-              <Building2
-                size={32}
-                className="text-purple-600 dark:text-purple-500"
-              />
-            }
+            icon={<Building2 size={32} strokeWidth={1.5} />}
             title="For Recruiters"
             desc="Post jobs, filter candidates by CGPA/skills, and manage interview rounds effortlessly."
           />
           <FeatureCard
-            icon={
-              <Briefcase
-                size={32}
-                className="text-stone-600 dark:text-emerald-500"
-              />
-            }
+            icon={<Briefcase size={32} strokeWidth={1.5} />}
             title="For TPO Admins"
             desc="Real-time analytics, automated notifications, and complete control over the placement drive."
           />
         </motion.div>
       </main>
 
-      {/* Simple Footer */}
+      {/* Footer */}
       <footer
-        className="border-t py-8 text-center text-sm transition-colors
+        className="border-t py-12 text-center text-sm transition-colors
         border-stone-200 text-stone-500 
-        dark:border-slate-800/50 dark:text-slate-600"
+        dark:border-white/10 dark:text-neutral-600 dark:uppercase dark:tracking-[0.3em] dark:text-xs"
       >
-        <p>&copy; 2026 PIMS Inc. All rights reserved.</p>
+        <p>PIMS INC. © 2026 // ALL RIGHTS RESERVED.</p>
       </footer>
     </div>
   )
@@ -222,55 +205,43 @@ function FeatureCard({
 }) {
   return (
     <div
-      className="p-8 rounded-2xl border transition-colors duration-300 hover:shadow-xl
-      bg-white border-stone-200 hover:border-stone-300
-      dark:bg-slate-900/50 dark:border-slate-800 dark:hover:border-slate-700"
+      className="p-10 border transition-all duration-500 group
+      rounded-2xl bg-white border-stone-200 hover:shadow-xl hover:border-stone-300
+      
+      /* Dark Mode: Brutalist Card 
+         - Sharp corners (rounded-none)
+         - Dark Charcoal BG (#0A0A0A)
+         - Thin White Border
+         - No shadow, just structure
+      */
+      dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10
+      dark:hover:border-white dark:hover:bg-black dark:hover:shadow-none"
     >
       <div
-        className="mb-4 w-14 h-14 flex items-center justify-center rounded-xl transition-colors
-        bg-stone-100 
-        dark:bg-slate-800/50"
+        className="mb-8 w-16 h-16 flex items-center justify-center transition-colors
+        rounded-xl bg-stone-100 text-stone-600
+        /* Dark: Sharp Icon Box, Deep Black BG, White Icon */
+        dark:rounded-none dark:bg-black dark:border dark:border-white/10 dark:text-white dark:group-hover:bg-white dark:group-hover:text-black"
       >
         {icon}
       </div>
       <h3
-        className="text-xl font-semibold mb-3
+        className="text-xl font-bold mb-4 transition-colors
         text-stone-900 
-        dark:text-white"
+        dark:text-white dark:uppercase dark:tracking-[0.2em] dark:text-sm"
       >
         {title}
       </h3>
       <p
-        className="leading-relaxed
+        className="leading-relaxed transition-colors
         text-stone-600 
-        dark:text-slate-400"
+        dark:text-neutral-500 dark:text-xs dark:font-medium dark:uppercase dark:tracking-wide dark:leading-loose"
       >
         {desc}
       </p>
-      <ul className="mt-6 space-y-2">
-        <li
-          className="flex items-center gap-2 text-sm
-          text-stone-500 
-          dark:text-slate-500"
-        >
-          <CheckCircle2
-            size={16}
-            className="text-emerald-500/50 dark:text-blue-500/50"
-          />{' '}
-          Real-time tracking
-        </li>
-        <li
-          className="flex items-center gap-2 text-sm
-          text-stone-500 
-          dark:text-slate-500"
-        >
-          <CheckCircle2
-            size={16}
-            className="text-emerald-500/50 dark:text-blue-500/50"
-          />{' '}
-          Instant Notifications
-        </li>
-      </ul>
+
+      {/* Decorative Line for Brutalist feel */}
+      <div className="hidden dark:block w-full h-px bg-white/10 mt-8 group-hover:bg-white transition-colors duration-500" />
     </div>
   )
 }

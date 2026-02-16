@@ -37,46 +37,51 @@ export default function ServerWaker() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center backdrop-blur-sm transition-colors duration-300
-            bg-stone-50/90 dark:bg-slate-950/90"
+          // Backdrop: Deep charcoal/black with blur, sharp aesthetic
+          className="fixed inset-0 z-9999 flex flex-col items-center justify-center backdrop-blur-md transition-colors duration-300
+            bg-stone-50/90 dark:bg-[#050505]/95"
         >
           <div
-            className="p-8 rounded-2xl shadow-2xl border flex flex-col items-center text-center max-w-sm mx-4 transition-colors duration-300
+            // Card: Sharp edges (rounded-none), thin borders, high negative space (p-12)
+            className="p-12 border w-full max-w-sm mx-4 transition-colors duration-300 flex flex-col items-center text-center shadow-xl
             bg-white border-stone-200 
-            dark:bg-slate-900 dark:border-slate-800"
+            dark:bg-[#0A0A0A] dark:border-white/10 dark:shadow-none dark:rounded-none"
           >
-            <div className="relative mb-6">
-              <div
-                className="absolute inset-0 rounded-full blur-xl animate-pulse transition-colors duration-300
-                bg-emerald-500/20 dark:bg-blue-500/20"
-              />
+            <div className="relative mb-8">
+              {/* Removed soft glows for a cleaner, stark look */}
               <Loader2
-                className="w-12 h-12 animate-spin relative z-10 transition-colors duration-300
-                text-emerald-600 dark:text-blue-500"
+                className="w-10 h-10 animate-spin relative z-10 transition-colors duration-300
+                text-stone-900 dark:text-white"
+                strokeWidth={1.5} // Thinner stroke for elegance
               />
             </div>
 
+            {/* Typography: Geometric, Uppercase, Widely Spaced */}
             <h3
-              className="text-xl font-bold mb-2 transition-colors duration-300
+              className="text-lg font-bold mb-4 uppercase tracking-[0.25em] transition-colors duration-300
               text-stone-900 dark:text-white"
             >
-              Waking up the Server...
+              System Waking
             </h3>
+
+            {/* Description: High contrast, slightly smaller/technical feel */}
             <p
-              className="text-sm transition-colors duration-300
-              text-stone-500 dark:text-slate-400"
+              className="text-xs font-medium leading-relaxed max-w-70 uppercase tracking-wide transition-colors duration-300
+              text-stone-500 dark:text-neutral-400"
             >
-              Since this is a free hosting tier, the server needs a moment to
-              wake up from sleep mode. This usually takes about 30-50 seconds.
+              Initializing server instance.
+              <br />
+              Estimated wait: 30-50 seconds.
             </p>
 
+            {/* Progress Bar: Sharp edges, thin line, high contrast */}
             <div
-              className="mt-6 w-full h-1.5 rounded-full overflow-hidden transition-colors duration-300
-              bg-stone-100 dark:bg-slate-800"
+              className="mt-10 w-full h-0.5 overflow-hidden transition-colors duration-300
+              bg-stone-200 dark:bg-neutral-800 rounded-none"
             >
               <div
                 className="h-full w-0 animate-[progress_40s_ease-in-out_forwards] transition-colors duration-300
-                bg-emerald-500 dark:bg-blue-500"
+                bg-stone-900 dark:bg-white"
               />
             </div>
           </div>
