@@ -74,67 +74,56 @@ export default function Register() {
   }
 
   return (
-    // 1. CONTAINER: Stone-50 (Light) vs Deep Charcoal #050505 (Dark)
+    // 1. CONTAINER
     <div
       className="min-h-screen flex items-center justify-center p-4 font-sans relative overflow-hidden transition-colors duration-300
       bg-stone-50 dark:bg-[#050505]"
     >
-      {/* 2. BACKGROUND DECOR: Subtle Fog in Dark Mode */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div
-          className="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full blur-[128px] transition-colors duration-500
-          bg-emerald-500/10 dark:bg-white/5"
-        />
-        <div
-          className="absolute top-[10%] -right-[10%] w-[40%] h-[60%] rounded-full blur-[128px] transition-colors duration-500
-          bg-stone-500/10 dark:bg-white/5"
-        />
+      {/* --- Global Background Image & Cinematic Glass Effects --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Base Image */}
+        <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-50 transition-opacity duration-700" />
+
+        {/* Dark Vignette / Cinematic Fade */}
+        <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+        <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/40" />
+
+        {/* Premium Noise Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
       </div>
+
+      {/* --- Background Glowing Spotlights --- */}
+      <div className="fixed top-[10%] left-[20%] w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+      <div className="fixed bottom-[20%] right-[10%] w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
 
       {/* --- CARD CONTAINER --- */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative w-full max-w-lg z-10 p-0.5 transition-all duration-300
-          /* Light: Rounded, Shadow */
-          rounded-3xl shadow-2xl
-          /* Dark: Sharp, No Shadow */
-          dark:rounded-none dark:shadow-none"
+        className="relative w-full max-w-lg z-10"
       >
-        {/* --- BORDER LAYER --- */}
-        <div className="absolute inset-0 overflow-hidden rounded-3xl dark:rounded-none">
-          {/* Spinning Gradient (Light Mode Only) */}
-          <div
-            className="absolute inset-[-200%] animate-[spin_4s_linear_infinite] 
-              bg-[conic-gradient(from_90deg_at_50%_50%,#3b82f6_0%,#a855f7_25%,#06b6d4_50%,#3b82f6_100%)]
-              dark:hidden"
-          />
-          {/* Static Sharp White Border (Dark Mode Only) */}
-          <div className="hidden dark:block absolute inset-0 border border-white/20" />
-        </div>
-
-        {/* --- CONTENT LAYER --- */}
+        {/* --- CONTENT LAYER (Deep Glass Panel) --- */}
         <div
-          className="relative p-8 md:p-10 h-full backdrop-blur-xl transition-all duration-300
-          /* Light: Rounded, White/80 */
-          rounded-3xl bg-white/80
-          /* Dark: Sharp, Deep Charcoal #0A0A0A */
-          dark:rounded-none dark:bg-[#0A0A0A]"
+          className="relative p-8 md:p-10 h-full transition-all duration-300 border
+          /* Light: Frosted White */
+          rounded-3xl bg-white/70 backdrop-blur-xl border-stone-200 shadow-2xl
+          /* Dark: Deep Glass Panel */
+          dark:rounded-3xl dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
         >
           <div className="text-center mb-8">
             <h2
               className="text-4xl font-extrabold mb-2 tracking-tight transition-colors
               text-stone-900 
               /* Dark: Uppercase, Widely Spaced */
-              dark:text-white dark:uppercase dark:tracking-[0.2em] dark:text-2xl"
+              dark:text-white dark:uppercase dark:tracking-[0.2em] dark:text-2xl drop-shadow-sm"
             >
               Create Account
             </h2>
             <p
               className="transition-colors text-sm
               text-stone-500 
-              dark:text-neutral-500 dark:uppercase dark:tracking-widest"
+              dark:text-neutral-400 dark:uppercase dark:tracking-widest"
             >
               Join PIMS to manage your career journey
             </p>
@@ -147,11 +136,11 @@ export default function Register() {
                 initial={{ opacity: 0, height: 0, y: -10 }}
                 animate={{ opacity: 1, height: 'auto', y: 0 }}
                 exit={{ opacity: 0, height: 0, y: -10 }}
-                className="mb-6 p-3 flex items-center gap-3 text-sm font-medium overflow-hidden transition-all
+                className="mb-6 p-3 flex items-center gap-3 text-sm font-medium overflow-hidden transition-all border backdrop-blur-md
                   /* Light: Rounded, Red-50 */
-                  rounded-lg bg-red-50 border border-red-200 text-red-600
-                  /* Dark: Sharp, High Contrast Red/Black */
-                  dark:rounded-none dark:bg-red-900/20 dark:border-red-500/50 dark:text-red-400"
+                  rounded-xl bg-red-50/80 border-red-200 text-red-600
+                  /* Dark: Sharp, High Contrast Red/Black Glass */
+                  dark:rounded-xl dark:bg-red-900/20 dark:border-red-500/30 dark:text-red-400"
               >
                 <AlertCircle size={18} className="shrink-0" />
                 {error}
@@ -171,10 +160,10 @@ export default function Register() {
               </div>
               <input
                 className="w-full pl-10 pr-4 py-3 border outline-none transition-all font-medium
-                  /* Light: Rounded, Stone Colors */
-                  rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
-                  /* Dark: Sharp, Black/White High Contrast */
-                  dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white dark:placeholder:text-neutral-700"
+                  /* Light: Glassy White */
+                  rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
+                  /* Dark: Glassy Dark */
+                  dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30 dark:placeholder:text-neutral-600"
                 placeholder="Full Name"
                 required
                 onChange={(e) => setForm({ ...form, fullName: e.target.value })}
@@ -192,10 +181,10 @@ export default function Register() {
               </div>
               <input
                 className="w-full pl-10 pr-4 py-3 border outline-none transition-all font-medium
-                  /* Light: Rounded, Stone Colors */
-                  rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
-                  /* Dark: Sharp, Black/White High Contrast */
-                  dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white dark:placeholder:text-neutral-700"
+                  /* Light: Glassy White */
+                  rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
+                  /* Dark: Glassy Dark */
+                  dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30 dark:placeholder:text-neutral-600"
                 placeholder="Email Address"
                 type="email"
                 required
@@ -214,10 +203,10 @@ export default function Register() {
               </div>
               <input
                 className="w-full pl-10 pr-12 py-3 border outline-none transition-all font-medium
-                  /* Light: Rounded, Stone Colors */
-                  rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
-                  /* Dark: Sharp, Black/White High Contrast */
-                  dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white dark:placeholder:text-neutral-700"
+                  /* Light: Glassy White */
+                  rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 placeholder:text-stone-400
+                  /* Dark: Glassy Dark */
+                  dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30 dark:placeholder:text-neutral-600"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 required
@@ -228,7 +217,7 @@ export default function Register() {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-3.5 transition-colors
                   text-stone-400 hover:text-stone-600
-                  dark:text-neutral-600 dark:hover:text-white"
+                  dark:text-neutral-500 dark:hover:text-white"
               >
                 {showPassword ? (
                   <EyeOff size={20} strokeWidth={1.5} />
@@ -249,16 +238,22 @@ export default function Register() {
               </div>
               <select
                 className="w-full pl-10 pr-4 py-3 border outline-none transition-all font-medium appearance-none cursor-pointer
-                  /* Light: Rounded, Stone Colors */
-                  rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500
-                  /* Dark: Sharp, Black/White High Contrast */
-                  dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white"
+                  /* Light: Glassy White */
+                  rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500
+                  /* Dark: Glassy Dark */
+                  dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30"
                 value={form.role}
                 onChange={(e) => setForm({ ...form, role: e.target.value })}
               >
-                <option value="STUDENT">I am a Student</option>
-                <option value="COMPANY">I am a Company</option>
-                <option value="ADMIN">I am an Admin</option>
+                <option value="STUDENT" className="dark:bg-[#0A0A0A]">
+                  I am a Student
+                </option>
+                <option value="COMPANY" className="dark:bg-[#0A0A0A]">
+                  I am a Company
+                </option>
+                <option value="ADMIN" className="dark:bg-[#0A0A0A]">
+                  I am an Admin
+                </option>
               </select>
               {/* Custom Chevron */}
               <div
@@ -282,7 +277,7 @@ export default function Register() {
                   >
                     <p
                       className="text-xs font-bold uppercase tracking-widest pl-1
-                      text-stone-500 dark:text-neutral-500"
+                      text-stone-500 dark:text-neutral-400"
                     >
                       Company Details
                     </p>
@@ -297,8 +292,8 @@ export default function Register() {
                       </div>
                       <input
                         className="w-full pl-10 pr-4 py-3 border outline-none transition-all font-medium
-                          rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 placeholder:text-stone-400
-                          dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white dark:placeholder:text-neutral-700"
+                          rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 placeholder:text-stone-400
+                          dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30 dark:placeholder:text-neutral-600"
                         placeholder="Company Name"
                         required
                         onChange={(e) =>
@@ -317,8 +312,8 @@ export default function Register() {
                       </div>
                       <input
                         className="w-full pl-10 pr-4 py-3 border outline-none transition-all font-medium
-                          rounded-xl bg-stone-50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 placeholder:text-stone-400
-                          dark:rounded-none dark:bg-[#0F0F0F] dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:border-white dark:placeholder:text-neutral-700"
+                          rounded-xl bg-white/50 border-stone-200 text-stone-900 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 placeholder:text-stone-400
+                          dark:rounded-xl dark:bg-white/5 dark:border-white/10 dark:text-white dark:focus:ring-0 dark:focus:bg-white/10 dark:focus:border-white/30 dark:placeholder:text-neutral-600"
                         placeholder="Website (e.g. https://google.com)"
                         required
                         onChange={(e) =>
@@ -337,7 +332,7 @@ export default function Register() {
                 /* Light: Rounded, Emerald Gradient */
                 rounded-xl bg-emerald-600 text-white hover:bg-emerald-500 shadow-emerald-500/20
                 /* Dark: Sharp, Solid White Block, Black Text */
-                dark:rounded-none dark:bg-white dark:text-black dark:hover:bg-neutral-200 dark:shadow-none dark:uppercase dark:tracking-widest dark:text-sm"
+                dark:rounded-xl dark:bg-white dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] dark:hover:bg-neutral-200 dark:uppercase dark:tracking-widest dark:text-sm"
             >
               <div className="absolute inset-0 bg-white/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <span className="relative flex items-center gap-2">
@@ -358,14 +353,14 @@ export default function Register() {
           <div className="mt-8 text-center">
             <p
               className="font-medium transition-colors text-sm
-              text-stone-500 dark:text-neutral-500 dark:uppercase dark:tracking-widest"
+              text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest"
             >
               ALREADY HAVE AN ACCOUNT?{' '}
               <Link
                 href="/auth/login"
                 className="font-bold hover:underline transition-all
                   text-emerald-600 hover:text-emerald-500
-                  dark:text-white dark:hover:text-neutral-300"
+                  dark:text-white dark:hover:text-neutral-200"
               >
                 SIGN IN
               </Link>

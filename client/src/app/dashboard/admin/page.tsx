@@ -84,10 +84,10 @@ export default function AdminDashboard() {
       color: '#1c1917',
       customClass: {
         popup:
-          'rounded-2xl border border-stone-200 dark:bg-[#0A0A0A] dark:border-white/20 dark:text-white dark:rounded-none',
+          'rounded-3xl border border-stone-200 dark:bg-black/80 dark:backdrop-blur-2xl dark:border-white/20 dark:text-white dark:rounded-none',
         title: 'uppercase tracking-widest font-bold',
         confirmButton:
-          'dark:bg-white dark:text-black dark:rounded-none font-bold',
+          'dark:bg-white dark:text-black dark:rounded-none font-bold tracking-wider',
         cancelButton:
           'dark:bg-transparent dark:border dark:border-white/20 dark:text-white dark:rounded-none',
       },
@@ -118,7 +118,7 @@ export default function AdminDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
     } catch (err) {
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
       fetchStudents()
@@ -152,7 +152,7 @@ export default function AdminDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
     }
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
       color: '#1c1917',
       customClass: {
         popup:
-          'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+          'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
       },
     })
   }
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
       color: '#1c1917',
       customClass: {
         popup:
-          'rounded-2xl border border-stone-200 dark:bg-[#0A0A0A] dark:border-white/20 dark:text-white dark:rounded-none',
+          'rounded-3xl border border-stone-200 dark:bg-black/80 dark:backdrop-blur-2xl dark:border-white/20 dark:text-white dark:rounded-none',
         title: 'uppercase tracking-widest font-bold',
         confirmButton:
           'dark:bg-white dark:text-black dark:rounded-none font-bold',
@@ -220,47 +220,64 @@ export default function AdminDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
     }
   }
 
   return (
-    // MAIN CONTAINER: Stone-50 (Light) vs Deep Charcoal #050505 (Dark)
+    // MAIN CONTAINER
     <div
-      className="min-h-screen font-sans p-8 transition-colors duration-300
+      className="min-h-screen font-sans p-8 transition-colors duration-300 relative overflow-hidden
       bg-stone-50 text-stone-900 
       dark:bg-[#050505] dark:text-slate-100"
     >
+      {/* --- Global Background Image & Cinematic Glass Effects --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Base Image */}
+        <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-40 transition-opacity duration-700" />
+        {/* Dark Vignette / Cinematic Fade */}
+        <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+        <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/60" />
+        {/* Premium Noise Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
+      </div>
+
+      {/* Background Spotlights for depth */}
+      <div className="fixed top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+      <div className="fixed bottom-0 right-1/4 w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-blue-500/10 dark:bg-white/5 z-1" />
+
       <motion.div
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="space-y-8"
+        className="space-y-8 relative z-10"
       >
         {/* Header Section */}
-        <div className="flex justify-between items-end">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <h1 className="text-3xl font-bold transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-tighter">
+            <h1 className="text-3xl font-black transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-tighter drop-shadow-sm">
               Admin Overview
             </h1>
-            <p className="mt-1 transition-colors text-stone-500 dark:text-neutral-500 dark:uppercase dark:tracking-widest dark:text-xs">
+            <p className="mt-1 transition-colors text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-xs">
               Real-time system data and management.
             </p>
           </div>
           <div
-            className={`flex items-center gap-2 px-3 py-1 text-sm font-medium border transition-colors 
+            className={`flex items-center gap-2 px-4 py-1.5 text-xs font-bold border transition-all backdrop-blur-md shadow-sm
               rounded-full ${maintenanceMode ? 'bg-red-50 text-red-600 border-red-200' : 'bg-emerald-50 text-emerald-600 border-emerald-200'}
-              /* Dark: Sharp, High Contrast */
-              dark:rounded-none ${maintenanceMode ? 'dark:bg-red-900/20 dark:text-red-400 dark:border-red-500/50' : 'dark:bg-white/10 dark:text-white dark:border-white/20'}`}
+              /* Dark: Sharp Glass Badge */
+              dark:rounded-none ${maintenanceMode ? 'dark:bg-red-900/40 dark:text-red-400 dark:border-red-500/50' : 'dark:bg-white/10 dark:text-white dark:border-white/20'}`}
           >
-            <Activity size={16} />
-            {loading
-              ? 'CONNECTING...'
-              : maintenanceMode
-                ? 'MAINTENANCE MODE'
-                : 'SYSTEM ONLINE'}
+            <Activity size={16} strokeWidth={2} />
+            <span className="tracking-widest">
+              {loading
+                ? 'CONNECTING...'
+                : maintenanceMode
+                  ? 'MAINTENANCE MODE'
+                  : 'SYSTEM ONLINE'}
+            </span>
           </div>
         </div>
 
@@ -302,10 +319,10 @@ export default function AdminDashboard() {
           <motion.div
             id="student-directory"
             variants={itemVariants}
-            className="lg:col-span-2 border overflow-hidden h-fit shadow-sm transition-colors
-              rounded-xl bg-white border-stone-200 
-              /* Dark: Sharp, Minimalist */
-              dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:shadow-none"
+            className="lg:col-span-2 border overflow-hidden h-fit shadow-xl transition-all duration-300
+              rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200 
+              /* Dark: Deep Glass Panel */
+              dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
           >
             <div
               className="p-6 border-b flex justify-between items-center transition-colors
@@ -313,32 +330,36 @@ export default function AdminDashboard() {
             >
               <div>
                 <h2
-                  className="text-lg font-bold flex items-center gap-2 transition-colors
+                  className="text-lg font-bold flex items-center gap-3 transition-colors
                   text-stone-800 
                   dark:text-white dark:uppercase dark:tracking-widest"
                 >
-                  <Users className="text-blue-500 dark:text-white" size={20} />
+                  <Users
+                    className="text-blue-500 dark:text-white"
+                    size={20}
+                    strokeWidth={1.5}
+                  />
                   Student Directory
                 </h2>
-                <p className="text-sm transition-colors text-stone-500 dark:text-neutral-500">
+                <p className="text-xs transition-colors text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest mt-1">
                   Verify registered students.
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
                   onClick={handleGenerateReport}
-                  className="flex items-center gap-2 px-3 py-1.5 text-xs font-bold transition-colors border
-                    rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100
+                  className="flex items-center gap-2 px-4 py-2 text-xs font-bold transition-all border shadow-sm
+                    rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-white hover:shadow-md
                     /* Dark: Sharp Ghost Button */
-                    dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black dark:uppercase dark:tracking-wide"
+                    dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black dark:uppercase dark:tracking-widest"
                 >
-                  <Download size={14} /> EXPORT CSV
+                  <Download size={14} strokeWidth={2} /> EXPORT CSV
                 </button>
                 <div
-                  className="px-3 py-1.5 text-xs font-bold flex items-center border
+                  className="px-4 py-2 text-xs font-bold flex items-center border shadow-sm
                   rounded-lg bg-blue-50 text-blue-600 border-blue-200
-                  /* Dark: Sharp Label */
-                  dark:rounded-none dark:bg-white/10 dark:text-white dark:border-white/20"
+                  /* Dark: Sharp Glass Label */
+                  dark:rounded-none dark:bg-white/10 dark:backdrop-blur-md dark:text-white dark:border-white/20 tracking-widest"
                 >
                   {students.length} STUDENTS
                 </div>
@@ -348,9 +369,9 @@ export default function AdminDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm text-stone-500 dark:text-neutral-400">
                 <thead
-                  className="uppercase text-xs font-semibold
-                  bg-stone-50 text-stone-500
-                  dark:bg-black dark:text-white dark:tracking-widest"
+                  className="uppercase text-[10px] font-bold tracking-widest
+                  bg-stone-50/50 text-stone-500 border-b border-stone-100
+                  dark:bg-black/60 dark:text-white dark:border-white/10"
                 >
                   <tr>
                     <th className="p-4">Name</th>
@@ -360,12 +381,12 @@ export default function AdminDashboard() {
                     <th className="p-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100 dark:divide-white/10">
+                <tbody className="divide-y divide-stone-100 dark:divide-white/5">
                   {students.length === 0 && (
                     <tr>
                       <td
                         colSpan={5}
-                        className="p-6 text-center text-stone-400 dark:text-neutral-600 dark:uppercase dark:text-xs dark:tracking-wide"
+                        className="p-8 text-center text-stone-400 dark:text-neutral-500 dark:uppercase dark:text-xs dark:tracking-widest"
                       >
                         No students registered yet.
                       </td>
@@ -375,26 +396,30 @@ export default function AdminDashboard() {
                     <tr
                       key={student.id}
                       className="transition-colors
-                        hover:bg-stone-50
-                        dark:hover:bg-[#0F0F0F]"
+                        hover:bg-white
+                        dark:hover:bg-white/5"
                     >
                       <td className="p-4 font-medium text-stone-900 dark:text-white">
                         {student.full_name}
                       </td>
-                      <td className="p-4">{student.roll_number || '-'}</td>
-                      <td className="p-4">{student.cgpa || '-'}</td>
+                      <td className="p-4 font-mono text-xs">
+                        {student.roll_number || '-'}
+                      </td>
+                      <td className="p-4 font-mono text-xs">
+                        {student.cgpa || '-'}
+                      </td>
                       <td className="p-4">
                         {student.is_verified ? (
                           <span
-                            className="inline-flex items-center gap-1 px-2 py-1 text-xs font-bold border
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border uppercase tracking-widest
                             rounded-full bg-emerald-50 text-emerald-600 border-emerald-200
-                            dark:rounded-none dark:bg-white/10 dark:text-white dark:border-white/30"
+                            dark:rounded-none dark:bg-white/10 dark:backdrop-blur-sm dark:text-white dark:border-white/20"
                           >
-                            <ShieldCheck size={12} /> VERIFIED
+                            <ShieldCheck size={12} strokeWidth={2} /> VERIFIED
                           </span>
                         ) : (
                           <span
-                            className="inline-flex items-center gap-1 px-2 py-1 text-xs font-bold border
+                            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[10px] font-bold border uppercase tracking-widest
                             rounded-full bg-amber-50 text-amber-600 border-amber-200
                             dark:rounded-none dark:bg-transparent dark:text-neutral-500 dark:border-white/10"
                           >
@@ -411,13 +436,13 @@ export default function AdminDashboard() {
                               student.full_name,
                             )
                           }
-                          className={`px-3 py-1.5 text-xs font-bold transition-all border 
-                            rounded-lg 
-                            /* Dark: Sharp */
-                            dark:rounded-none
+                          className={`px-4 py-2 text-xs font-bold transition-all border uppercase tracking-widest
+                            rounded-lg shadow-sm
+                            /* Dark: Sharp Buttons */
+                            dark:rounded-none dark:shadow-none
                             ${
                               student.is_verified
-                                ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100 dark:bg-transparent dark:text-red-400 dark:border-red-500/50 dark:hover:bg-red-900/20'
+                                ? 'bg-red-50 text-red-600 border-red-200 hover:bg-white dark:bg-transparent dark:text-red-400 dark:border-red-500/50 dark:hover:bg-red-900/40'
                                 : 'bg-blue-600 text-white border-blue-600 hover:bg-blue-500 dark:bg-white dark:text-black dark:border-white dark:hover:bg-neutral-200'
                             }`}
                         >
@@ -434,36 +459,37 @@ export default function AdminDashboard() {
           {/* Right Column: Quick Actions */}
           <motion.div variants={itemVariants} className="space-y-6">
             <div
-              className="border p-6 shadow-sm transition-colors
-              rounded-xl bg-white border-stone-200
-              dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:shadow-none"
+              className="border p-8 shadow-xl transition-all duration-300
+              rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200
+              /* Dark: Deep Glass Panel */
+              dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
             >
-              <h2 className="text-lg font-bold mb-4 transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-widest">
+              <h2 className="text-lg font-bold mb-6 transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-widest border-b border-stone-200 dark:border-white/10 pb-4">
                 Quick Actions
               </h2>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <button
                   onClick={handleManageUsers}
-                  className="w-full flex items-center gap-3 px-4 py-3 transition border font-medium
-                    rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100
-                    /* Dark: Sharp, Inverted Hover */
-                    dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black"
+                  className="w-full flex items-center gap-4 px-5 py-4 transition-all border font-bold text-xs uppercase tracking-widest shadow-sm
+                    rounded-xl bg-white border-stone-200 text-stone-600 hover:shadow-md hover:text-stone-900
+                    /* Dark: Sharp Glass Buttons */
+                    dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black dark:shadow-none"
                 >
                   <Users size={18} strokeWidth={1.5} /> MANAGE USERS
                 </button>
                 <button
                   onClick={handleGenerateReport}
-                  className="w-full flex items-center gap-3 px-4 py-3 transition border font-medium
-                    rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100
-                    dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black"
+                  className="w-full flex items-center gap-4 px-5 py-4 transition-all border font-bold text-xs uppercase tracking-widest shadow-sm
+                    rounded-xl bg-white border-stone-200 text-stone-600 hover:shadow-md hover:text-stone-900
+                    dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black dark:shadow-none"
                 >
                   <FileText size={18} strokeWidth={1.5} /> GENERATE REPORTS
                 </button>
                 <button
                   onClick={handleSystemConfig}
-                  className="w-full flex items-center gap-3 px-4 py-3 transition border font-medium
-                    rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100
-                    dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black"
+                  className="w-full flex items-center gap-4 px-5 py-4 transition-all border font-bold text-xs uppercase tracking-widest shadow-sm
+                    rounded-xl bg-white border-stone-200 text-stone-600 hover:shadow-md hover:text-stone-900
+                    dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black dark:shadow-none"
                 >
                   <Settings size={18} strokeWidth={1.5} /> SYSTEM CONFIG
                 </button>
@@ -471,29 +497,30 @@ export default function AdminDashboard() {
             </div>
 
             <div
-              className={`p-6 border transition-colors duration-300
-                rounded-xl 
-                dark:rounded-none
+              className={`p-6 border transition-colors duration-300 shadow-xl backdrop-blur-xl
+                rounded-2xl 
+                /* Dark: Sharp Glass Panel */
+                dark:rounded-none dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]
                 ${
                   maintenanceMode
-                    ? 'bg-amber-50 border-amber-200 dark:bg-yellow-900/10 dark:border-yellow-500/30'
-                    : 'bg-red-50 border-red-200 dark:bg-red-900/10 dark:border-red-500/30'
+                    ? 'bg-amber-50/90 border-amber-200 dark:bg-yellow-900/20 dark:border-yellow-500/30'
+                    : 'bg-red-50/90 border-red-200 dark:bg-red-900/20 dark:border-red-500/30'
                 }`}
             >
               <div
-                className={`flex items-center gap-2 mb-2 font-bold ${
+                className={`flex items-center gap-3 mb-3 font-bold text-sm uppercase tracking-widest ${
                   maintenanceMode
                     ? 'text-amber-600 dark:text-yellow-400'
                     : 'text-red-600 dark:text-red-400'
                 }`}
               >
-                <ShieldAlert size={20} />
-                <span className="dark:uppercase dark:tracking-wide">
+                <ShieldAlert size={20} strokeWidth={1.5} />
+                <span>
                   {maintenanceMode ? 'SYSTEM WARNING' : 'MAINTENANCE MODE'}
                 </span>
               </div>
               <p
-                className={`text-sm mb-4 ${
+                className={`text-xs leading-relaxed font-medium uppercase tracking-wide ${
                   maintenanceMode
                     ? 'text-amber-700 dark:text-yellow-200/70'
                     : 'text-red-700 dark:text-red-200/70'
@@ -521,37 +548,37 @@ function StatCard({ title, value, icon, theme, trend }: any) {
     orange: 'bg-orange-50 text-orange-600 border-orange-200',
   }
 
-  // Dark Mode is Strict Monochrome (Brutalist) for all cards
+  // Dark Mode uses unified glass styling, so we don't need the theme colors here.
   const currentLightStyle = lightStyles[theme] || lightStyles.blue
 
   return (
     <motion.div
       variants={itemVariants}
-      className={`p-6 border hover:shadow-lg transition-all group
-        rounded-xl bg-white border-stone-200 
-        /* Dark: Sharp corners, Charcoal BG, Thin White Border */
-        dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:shadow-none dark:hover:border-white/40`}
+      className={`p-6 border hover:shadow-xl transition-all duration-300 group
+        rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200 shadow-sm
+        /* Dark: Deep Glass Panel */
+        dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] dark:hover:border-white/40 dark:hover:-translate-y-1`}
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-6">
         <div
           className={`p-3 border transition-colors
-           rounded-lg ${currentLightStyle}
-           /* Dark: Sharp Icon Box, Black BG, White Icon */
-           dark:rounded-none dark:bg-black dark:text-white dark:border-white/20 `}
+           rounded-xl ${currentLightStyle}
+           /* Dark: Sharp Icon Box, Glassy BG, White Icon */
+           dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/20 `}
         >
           {icon}
         </div>
-        <span className="text-xs font-medium text-stone-400 dark:text-neutral-500 dark:uppercase dark:tracking-wider">
+        <span className="text-[10px] font-bold text-stone-400 dark:text-neutral-500 dark:uppercase dark:tracking-widest">
           TOTAL
         </span>
       </div>
-      <h3 className="text-3xl font-bold text-stone-800 dark:text-white">
+      <h3 className="text-4xl font-black text-stone-800 dark:text-white tracking-tighter">
         {value}
       </h3>
-      <p className="text-sm font-medium mt-1 text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-wide dark:text-xs">
+      <p className="text-sm font-bold mt-2 text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-[10px]">
         {title}
       </p>
-      <p className="text-xs mt-2 font-semibold text-emerald-600 dark:text-white dark:border-b dark:border-white dark:inline-block pb-0.5">
+      <p className="text-[10px] mt-4 font-bold text-emerald-600 dark:text-white dark:border-b dark:border-white/30 dark:inline-block pb-0.5 uppercase tracking-widest">
         {trend}
       </p>
     </motion.div>

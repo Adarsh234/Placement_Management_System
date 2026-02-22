@@ -6,6 +6,7 @@ import {
   Briefcase,
   UserCheck,
   Building2,
+  CheckCircle2,
   ArrowRight,
   Info,
   Code2,
@@ -38,13 +39,27 @@ export default function Home() {
       bg-stone-50 text-stone-900 
       dark:bg-[#050505] dark:text-white"
     >
-      {/* --- Background Spotlights --- */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/10 dark:bg-white/5" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-stone-500/10 dark:bg-white/5" />
+      {/* --- Global Background Image & Cinematic Glass Effects --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Base Image (Updated to use local public folder) */}
+        {/* CHANGE 'interview.jpg' TO YOUR EXACT FILE NAME */}
+        <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-50 transition-opacity duration-700" />
+        {/* Dark Vignette / Cinematic Fade */}
+        <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+        <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/40" />{' '}
+        {/* Base atmospheric tint */}
+        {/* Premium Noise Texture for tactile feel */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
+      </div>
+
+      {/* --- Background Glowing Spotlights --- */}
+      {/* Creates the soft colored light bleeding through the dark glass */}
+      <div className="fixed top-[10%] left-[20%] w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+      <div className="fixed bottom-[20%] right-[10%] w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
 
       {/* --- Navbar --- */}
-      <nav className="fixed top-0 w-full p-6 z-50 transition-all duration-300 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+      <nav className="fixed top-0 w-full p-6 z-50 transition-all duration-300 backdrop-blur-xl border-b border-stone-200 dark:border-white/5 bg-white/40 dark:bg-black/20">
+        <div className="max-w-7xl mx-auto flex justify-between items-center relative">
           <div className="text-2xl font-black tracking-tighter transition-colors text-emerald-700 dark:text-white dark:tracking-widest">
             PIMS.
           </div>
@@ -54,8 +69,8 @@ export default function Home() {
             <Link href="#about">
               <button
                 className="flex items-center gap-2 px-5 py-2.5 font-bold text-xs uppercase tracking-widest transition-all
-                  bg-white/50 backdrop-blur-md border border-stone-200 text-stone-600 rounded-full hover:bg-white hover:shadow-md
-                  dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-300 dark:rounded-none dark:hover:bg-white/10 dark:hover:text-white"
+                  bg-white/60 backdrop-blur-md border border-stone-200 text-stone-600 rounded-full hover:bg-white hover:shadow-md
+                  dark:bg-white/5 dark:backdrop-blur-xl dark:border-white/10 dark:text-neutral-300 dark:rounded-2xl dark:hover:bg-white/10 dark:hover:text-white dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
               >
                 <Info size={14} /> System Intel
               </button>
@@ -66,7 +81,7 @@ export default function Home() {
             <ThemeToggle />
             <Link
               href="/auth/login?role=admin"
-              className="text-xs font-bold uppercase tracking-[0.2em] transition-colors text-stone-600 hover:text-stone-900 dark:text-neutral-500 dark:hover:text-white"
+              className="text-xs font-bold uppercase tracking-[0.2em] transition-colors text-stone-600 hover:text-stone-900 dark:text-neutral-300 dark:hover:text-white"
             >
               Admin Portal
             </Link>
@@ -74,7 +89,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <main className="flex flex-col items-center justify-center pt-32 pb-20 px-4 relative z-10">
+      <main className="flex flex-col items-center justify-center pt-40 pb-20 px-4 relative z-10">
         {/* --- HERO SECTION --- */}
         <motion.div
           initial="hidden"
@@ -85,29 +100,29 @@ export default function Home() {
           <motion.div
             variants={fadeInUp}
             className="inline-flex items-center gap-3 px-4 py-2 border text-[10px] font-bold uppercase tracking-[0.25em] transition-all
-              rounded-full bg-emerald-100/50 border-emerald-200 text-emerald-700
-              dark:rounded-none dark:bg-white/5 dark:border-white/10 dark:text-neutral-200"
+              rounded-full bg-emerald-100/50 border-emerald-200 text-emerald-700 backdrop-blur-md
+              dark:rounded-2xl dark:bg-white/5 dark:backdrop-blur-xl dark:border-white/10 dark:text-white dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400 dark:bg-white"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 dark:bg-white"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400 dark:bg-emerald-400"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 dark:bg-emerald-400"></span>
             </span>
             System Online v2.0
           </motion.div>
 
           <motion.h1
             variants={fadeInUp}
-            className="text-5xl md:text-8xl font-black tracking-tight text-stone-900 dark:text-white dark:uppercase dark:tracking-tighter dark:leading-[0.9]"
+            className="text-5xl md:text-8xl font-black tracking-tight text-stone-900 dark:text-white dark:uppercase dark:tracking-tighter dark:leading-[0.9] drop-shadow-sm"
           >
             Campus <br /> Recruitment <br />
-            <span className="text-emerald-700 dark:text-neutral-600">
+            <span className="text-emerald-700 dark:text-emerald-400">
               Simplified.
             </span>
           </motion.h1>
 
           <motion.p
             variants={fadeInUp}
-            className="text-lg md:text-xl max-w-xl mx-auto leading-relaxed transition-colors text-stone-600 dark:text-neutral-400 dark:font-medium dark:text-sm dark:uppercase dark:tracking-widest"
+            className="text-lg md:text-xl max-w-xl mx-auto leading-relaxed transition-colors text-stone-600 dark:text-neutral-300 dark:font-medium dark:text-sm dark:uppercase dark:tracking-widest"
           >
             The centralized platform connecting ambitious students with top-tier
             companies.
@@ -118,7 +133,7 @@ export default function Home() {
             className="flex flex-wrap gap-6 justify-center mt-12"
           >
             <Link href="/auth/login?role=student">
-              <button className="group relative flex items-center gap-4 px-8 py-4 font-bold transition-all duration-300 rounded-full bg-emerald-600 text-white shadow-lg hover:bg-emerald-500 hover:scale-105 shadow-emerald-500/20 dark:rounded-none dark:bg-white dark:text-black dark:shadow-none dark:hover:bg-neutral-200 dark:hover:scale-100 dark:uppercase dark:tracking-widest dark:text-xs">
+              <button className="group relative flex items-center gap-4 px-8 py-4 font-bold transition-all duration-300 rounded-full bg-emerald-600 text-white shadow-lg hover:bg-emerald-500 hover:scale-105 shadow-emerald-500/20 dark:rounded-2xl dark:bg-white dark:text-black dark:shadow-[0_0_20px_rgba(255,255,255,0.2)] dark:hover:bg-neutral-200 dark:hover:scale-100 dark:uppercase dark:tracking-widest dark:text-xs">
                 Student Login{' '}
                 <ArrowRight
                   size={16}
@@ -127,7 +142,7 @@ export default function Home() {
               </button>
             </Link>
             <Link href="/auth/login?role=company">
-              <button className="group relative flex items-center gap-4 px-8 py-4 border font-bold transition-all duration-300 rounded-full bg-white border-stone-200 text-stone-700 hover:bg-stone-50 hover:border-stone-300 dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-white dark:hover:bg-white/5 dark:hover:border-white/50 dark:uppercase dark:tracking-widest dark:text-xs">
+              <button className="group relative flex items-center gap-4 px-8 py-4 border font-bold transition-all duration-300 rounded-full bg-white/50 backdrop-blur-md border-stone-200 text-stone-700 hover:bg-stone-50 hover:border-stone-300 dark:bg-black/40 dark:backdrop-blur-xl dark:rounded-2xl dark:border-white/10 dark:text-white dark:hover:bg-white/10 dark:hover:border-white/30 dark:uppercase dark:tracking-widest dark:text-xs dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
                 Recruiter Portal
               </button>
             </Link>
@@ -139,29 +154,30 @@ export default function Home() {
           id="about"
           className="w-full max-w-7xl mx-auto py-20 scroll-mt-24 space-y-24"
         >
-          {/* 1. Mission Block */}
+          {/* 1. Mission Block (Glass Panel) */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="border p-8 md:p-16 transition-all duration-300 rounded-3xl bg-white/50 border-stone-200 dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:bg-[url('https://grainy-gradients.vercel.app/noise.svg')] dark:bg-opacity-10"
+            className="border p-8 md:p-16 transition-all duration-300 rounded-3xl bg-white/70 backdrop-blur-xl border-stone-200 
+            dark:rounded-3xl dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div className="md:sticky md:top-32">
                 <h2 className="text-4xl md:text-6xl font-black mb-6 tracking-tight text-stone-900 dark:text-white dark:uppercase dark:tracking-tighter dark:leading-[0.8]">
                   Bridging <br /> Talent & <br /> Opportunity
                 </h2>
-                <div className="w-20 h-2 bg-emerald-500 dark:bg-white mb-6"></div>
-                <p className="font-bold uppercase tracking-widest text-xs text-stone-500 dark:text-neutral-500">
+                <div className="w-20 h-2 bg-emerald-500 dark:bg-emerald-400 mb-6"></div>
+                <p className="font-bold uppercase tracking-widest text-xs text-stone-500 dark:text-neutral-400">
                   Mission Statement // 2026
                 </p>
               </div>
               <div className="space-y-8">
                 <div className="prose prose-lg dark:prose-invert">
-                  <p className="text-lg leading-relaxed text-stone-600 dark:text-neutral-300 dark:font-light">
+                  <p className="text-lg leading-relaxed text-stone-600 dark:text-neutral-200 dark:font-light">
                     The{' '}
-                    <strong>
+                    <strong className="dark:text-white">
                       Placement Information Management System (PIMS)
                     </strong>{' '}
                     is designed to revolutionize how campuses handle
@@ -170,19 +186,19 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="grid grid-cols-2 gap-4 pt-4">
-                  <div className="p-6 border rounded-2xl bg-stone-50 border-stone-100 dark:bg-transparent dark:rounded-none dark:border-white/10">
-                    <h3 className="text-3xl font-black text-emerald-600 dark:text-white">
+                  <div className="p-6 border rounded-2xl bg-white border-stone-100 dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10">
+                    <h3 className="text-3xl font-black text-emerald-600 dark:text-emerald-400">
                       98%
                     </h3>
-                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-500 mt-2">
+                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-300 mt-2">
                       Placement Rate
                     </p>
                   </div>
-                  <div className="p-6 border rounded-2xl bg-stone-50 border-stone-100 dark:bg-transparent dark:rounded-none dark:border-white/10">
-                    <h3 className="text-3xl font-black text-purple-600 dark:text-white">
+                  <div className="p-6 border rounded-2xl bg-white border-stone-100 dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10">
+                    <h3 className="text-3xl font-black text-purple-600 dark:text-blue-400">
                       500+
                     </h3>
-                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-500 mt-2">
+                    <p className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-300 mt-2">
                       Partner Companies
                     </p>
                   </div>
@@ -191,13 +207,13 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* 2. Architecture & Tech Stack (UPDATED) */}
+          {/* 2. Architecture & Tech Stack */}
           <div className="space-y-12">
             <div className="text-center">
               <h3 className="text-3xl font-black text-stone-900 dark:text-white dark:uppercase dark:tracking-tighter">
                 System Architecture
               </h3>
-              <p className="text-stone-500 dark:text-neutral-500 mt-2">
+              <p className="text-stone-500 dark:text-neutral-400 mt-2 font-mono text-sm uppercase tracking-widest">
                 Powered by modern web technologies
               </p>
             </div>
@@ -294,8 +310,111 @@ export default function Home() {
         </motion.div>
       </main>
 
-      <footer className="border-t py-12 text-center text-sm transition-colors border-stone-200 text-stone-500 dark:border-white/10 dark:text-neutral-600 dark:uppercase dark:tracking-[0.3em] dark:text-xs">
-        <p>PIMS INC. © 2026 // ALL RIGHTS RESERVED.</p>
+      {/* --- EXTENDED FOOTER --- */}
+      <footer className="relative z-10 border-t border-stone-200 dark:border-white/10 bg-white/60 dark:bg-black/40 backdrop-blur-2xl mt-20 pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-16">
+          {/* Brand Identity */}
+          <div className="max-w-xs">
+            <h2 className="text-3xl font-black tracking-tighter text-emerald-700 dark:text-white mb-4">
+              PIMS.
+            </h2>
+            <p className="text-sm font-medium leading-relaxed text-stone-600 dark:text-neutral-400">
+              The next-generation Placement Information Management System.
+              Bridging the gap between top campus talent and global industry
+              leaders.
+            </p>
+          </div>
+
+          {/* Navigation Grids */}
+          <div className="grid grid-cols-2 gap-12 md:gap-24 w-full md:w-auto">
+            {/* Portals Link Block */}
+            <div className="space-y-6">
+              <h4 className="font-bold uppercase tracking-widest text-xs text-stone-900 dark:text-white border-b border-stone-200 dark:border-white/10 pb-2">
+                Portals
+              </h4>
+              <ul className="space-y-3 text-sm font-medium text-stone-600 dark:text-neutral-400">
+                <li>
+                  <Link
+                    href="/auth/login?role=student"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    Student Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/auth/login?role=company"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    Recruiter Login
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/auth/login?role=admin"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    Admin Access
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* System Link Block */}
+            <div className="space-y-6">
+              <h4 className="font-bold uppercase tracking-widest text-xs text-stone-900 dark:text-white border-b border-stone-200 dark:border-white/10 pb-2">
+                System Info
+              </h4>
+              <ul className="space-y-3 text-sm font-medium text-stone-600 dark:text-neutral-400">
+                <li>
+                  <Link
+                    href="#about"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    About Project
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#"
+                    className="hover:text-emerald-600 dark:hover:text-white transition-colors"
+                  >
+                    API Status
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Copyright Row */}
+        <div className="max-w-7xl mx-auto px-6 mt-20 pt-8 border-t border-stone-200 dark:border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-neutral-500">
+            © 2026 PIMS INC. // ALL RIGHTS RESERVED.
+          </p>
+          <div className="flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-stone-400 dark:text-neutral-500">
+            <Link
+              href="#"
+              className="hover:text-stone-900 dark:hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              href="#"
+              className="hover:text-stone-900 dark:hover:text-white transition-colors"
+            >
+              Terms of Service
+            </Link>
+          </div>
+        </div>
       </footer>
     </div>
   )
@@ -307,27 +426,27 @@ function TechCard({ icon, title, desc }: any) {
   return (
     <motion.div
       variants={fadeInUp}
-      className="group p-8 border transition-all duration-300 h-full relative overflow-hidden
-      rounded-2xl bg-white border-stone-200 hover:shadow-xl hover:-translate-y-1
-      /* Dark Mode: Brutalist Inversion */
-      dark:rounded-none dark:bg-transparent dark:border-white/10 dark:hover:bg-white dark:hover:text-black dark:hover:border-white"
+      className="group p-8 border transition-all duration-300 h-full relative overflow-hidden backdrop-blur-md
+      rounded-2xl bg-white/70 border-stone-200 hover:shadow-xl hover:-translate-y-1
+      /* Dark Mode: Deep Glass Panel */
+      dark:rounded-2xl dark:bg-black/40 dark:backdrop-blur-xl dark:border-white/10 dark:hover:bg-white/10 dark:hover:border-white/30 dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
     >
       <div className="relative z-10">
         <div
           className="mb-6 text-emerald-600 transition-transform duration-300 group-hover:scale-110 group-hover:text-emerald-500
-          dark:text-white dark:group-hover:text-black"
+          dark:text-white"
         >
           {icon}
         </div>
         <h4
           className="text-4xl font-black text-stone-900 uppercase tracking-tighter mb-4 transition-colors
-          dark:text-white dark:group-hover:text-black"
+          dark:text-white"
         >
           {title}
         </h4>
         <p
           className="font-mono text-sm text-stone-500 transition-colors
-          dark:text-neutral-500 dark:group-hover:text-black/70"
+          dark:text-neutral-400"
         >
           {desc}
         </p>
@@ -340,16 +459,16 @@ function WorkflowStep({ step, title, desc }: any) {
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
       <div
-        className="w-24 h-24 flex items-center justify-center text-2xl font-black mb-6 transition-all
-        rounded-full bg-white border-4 border-emerald-100 text-emerald-600
-        dark:rounded-none dark:bg-[#050505] dark:border-white/20 dark:text-white"
+        className="w-24 h-24 flex items-center justify-center text-2xl font-black mb-6 transition-all backdrop-blur-md
+        rounded-full bg-white border-4 border-emerald-100 text-emerald-600 shadow-lg
+        dark:bg-black/60 dark:border-white/10 dark:text-emerald-400 dark:shadow-[0_0_20px_rgba(0,0,0,0.5)]"
       >
         {step}
       </div>
       <h4 className="text-xl font-bold mb-2 text-stone-900 dark:text-white dark:uppercase dark:tracking-wide">
         {title}
       </h4>
-      <p className="text-stone-600 dark:text-neutral-500 text-sm max-w-xs leading-relaxed">
+      <p className="text-stone-600 dark:text-neutral-400 text-sm max-w-xs leading-relaxed">
         {desc}
       </p>
     </div>
@@ -367,19 +486,19 @@ function FeatureCard({
 }) {
   return (
     <div
-      className="p-10 border transition-all duration-500 group rounded-2xl bg-white border-stone-200 hover:shadow-xl hover:border-stone-300 
-      dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:hover:border-white dark:hover:bg-black dark:hover:shadow-none"
+      className="p-10 border transition-all duration-500 group backdrop-blur-md rounded-2xl bg-white/70 border-stone-200 hover:shadow-xl hover:border-stone-300 
+      dark:rounded-3xl dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:hover:border-white/30 dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
     >
-      <div className="mb-8 w-16 h-16 flex items-center justify-center transition-colors rounded-xl bg-stone-100 text-stone-600 dark:rounded-none dark:bg-black dark:border dark:border-white/10 dark:text-white dark:group-hover:bg-white dark:group-hover:text-black">
+      <div className="mb-8 w-16 h-16 flex items-center justify-center transition-colors rounded-xl bg-stone-100 text-stone-600 dark:bg-white/10 dark:border dark:border-white/10 dark:text-white dark:group-hover:bg-white dark:group-hover:text-black">
         {icon}
       </div>
       <h3 className="text-xl font-bold mb-4 transition-colors text-stone-900 dark:text-white dark:uppercase dark:tracking-[0.2em] dark:text-sm">
         {title}
       </h3>
-      <p className="leading-relaxed transition-colors text-stone-600 dark:text-neutral-500 dark:text-xs dark:font-medium dark:uppercase dark:tracking-wide dark:leading-loose">
+      <p className="leading-relaxed transition-colors text-stone-600 dark:text-neutral-300 dark:text-xs dark:font-medium dark:uppercase dark:tracking-wide dark:leading-loose">
         {desc}
       </p>
-      <div className="hidden dark:block w-full h-1px bg-white/10 mt-8 group-hover:bg-white transition-colors duration-500" />
+      <div className="hidden dark:block w-full h-px bg-white/10 mt-8 group-hover:bg-white/50 transition-colors duration-500" />
     </div>
   )
 }

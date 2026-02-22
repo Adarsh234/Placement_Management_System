@@ -23,53 +23,58 @@ export default function DashboardLayout({
           Dark: #050505 (Deep Charcoal/Black) 
       */}
       <div
-        className="min-h-screen font-sans relative transition-colors duration-300 
+        className="min-h-screen font-sans relative transition-colors duration-300 overflow-hidden
         selection:bg-emerald-500/30 dark:selection:bg-white dark:selection:text-black
         bg-stone-50 text-stone-900 
         dark:bg-[#050505] dark:text-white"
       >
-        {/* --- Background Spotlights --- */}
-        {/* Light Mode: Subtle Emerald/Stone. Dark Mode: Subtle White Fog */}
-        <div
-          className="fixed top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500
-          bg-emerald-500/5 
-          dark:bg-white/5"
-        />
-        <div
-          className="fixed bottom-0 right-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500
-          bg-stone-500/5 
-          dark:bg-white/5"
-        />
+        {/* --- Global Background Image & Cinematic Glass Effects --- */}
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          {/* Base Image */}
+          <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-40 transition-opacity duration-700" />
+
+          {/* Dark Vignette / Cinematic Fade */}
+          <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+          <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/60" />
+
+          {/* Premium Noise Texture */}
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
+        </div>
+
+        {/* --- Background Glowing Spotlights --- */}
+        <div className="fixed top-[10%] left-[20%] w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+        <div className="fixed bottom-[20%] right-[10%] w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
 
         {/* --- Top Navigation Bar --- */}
         <nav
-          className="sticky top-0 z-50 w-full backdrop-blur-xl border-b shadow-sm transition-all duration-300
-          bg-white/80 border-stone-200 
-          dark:bg-[#050505]/80 dark:border-white/10 dark:shadow-none"
+          className="sticky top-0 z-50 w-full backdrop-blur-xl border-b transition-all duration-300
+          bg-white/40 border-stone-200 shadow-sm
+          /* Dark: Deep Glass Navbar */
+          dark:bg-black/20 dark:border-white/5 dark:shadow-[0_4px_24px_rgba(0,0,0,0.4)]"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="flex justify-between items-center h-20">
               {/* Logo Section */}
-              <div className="flex items-center gap-3 group cursor-default">
+              <div className="flex items-center gap-4 group cursor-default">
                 <div
-                  className="p-2 border shadow-sm transition-transform group-hover:scale-105
-                  rounded-lg bg-emerald-50 border-emerald-200 text-emerald-600
-                  /* Dark: Sharp, Black High Contrast */
-                  dark:rounded-none dark:bg-black dark:border-white/20 dark:text-white dark:shadow-none"
+                  className="p-2.5 border transition-all group-hover:scale-105 shadow-sm
+                  rounded-xl bg-emerald-50 border-emerald-200 text-emerald-600
+                  /* Dark: Sharp Glass Icon Box */
+                  dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/20 dark:text-white dark:shadow-none"
                 >
-                  <LayoutDashboard size={20} strokeWidth={1.5} />
+                  <LayoutDashboard size={22} strokeWidth={1.5} />
                 </div>
                 <h1
-                  className="text-xl font-bold tracking-tight transition-colors flex items-baseline gap-3
+                  className="text-2xl font-black tracking-tighter transition-colors flex items-baseline gap-3 drop-shadow-sm
                   text-stone-800 
                   dark:text-white"
                 >
-                  PIMS
+                  PIMS.
                   <span
-                    className="font-medium hidden sm:inline text-sm
+                    className="font-bold hidden sm:inline text-sm
                     text-stone-400 
                     /* Dark: Uppercase, Tech Label style */
-                    dark:text-neutral-500 dark:uppercase dark:tracking-widest dark:text-xs"
+                    dark:text-neutral-400 dark:uppercase dark:tracking-[0.2em] dark:text-xs"
                   >
                     Dashboard
                   </span>
@@ -77,20 +82,20 @@ export default function DashboardLayout({
               </div>
 
               {/* Right Actions */}
-              <div className="flex items-center gap-3 sm:gap-5">
+              <div className="flex items-center gap-3 sm:gap-6">
                 <ThemeToggle />
 
                 {/* Notification Bell */}
                 <button
-                  className="p-2 transition-colors relative group
-                  rounded-full text-stone-400 hover:text-stone-800 hover:bg-stone-100
-                  /* Dark: Sharp, Inverted Hover */
-                  dark:rounded-none dark:text-neutral-400 dark:hover:bg-white dark:hover:text-black"
+                  className="p-2.5 transition-all relative group border
+                  rounded-xl bg-white/50 border-transparent text-stone-500 hover:text-stone-800 hover:bg-white hover:border-stone-200 hover:shadow-sm
+                  /* Dark: Sharp Glass Button */
+                  dark:rounded-none dark:bg-transparent dark:border-white/10 dark:text-neutral-400 dark:hover:bg-white dark:hover:text-black dark:hover:border-white"
                 >
                   <Bell size={20} strokeWidth={1.5} />
                   <span
-                    className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border shadow-sm
-                    border-white 
+                    className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full border shadow-sm
+                    bg-red-500 border-white 
                     /* Dark: Sharp indicator */
                     dark:border-black dark:rounded-none dark:w-1.5 dark:h-1.5"
                   ></span>
@@ -98,20 +103,20 @@ export default function DashboardLayout({
 
                 {/* Divider */}
                 <div
-                  className="h-6 w-px mx-1 hidden sm:block
-                  bg-stone-200 
+                  className="h-8 w-px mx-1 hidden sm:block
+                  bg-stone-300 
                   dark:bg-white/10"
                 ></div>
 
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-all border
-                  rounded-lg border-transparent text-stone-500 hover:text-red-600 hover:bg-red-50 hover:border-red-200
-                  /* Dark: Sharp, Bordered, Inverted Hover */
-                  dark:rounded-none dark:text-neutral-300 dark:border-white/10 dark:hover:bg-white dark:hover:text-black dark:uppercase dark:tracking-wider dark:text-xs dark:font-bold"
+                  className="flex items-center gap-3 px-5 py-2.5 text-xs font-bold transition-all border shadow-sm
+                  rounded-xl bg-white/70 backdrop-blur-md border-stone-200 text-stone-600 hover:text-red-600 hover:bg-red-50 hover:border-red-200
+                  /* Dark: Sharp Glass Button */
+                  dark:rounded-none dark:bg-white/5 dark:border-white/10 dark:text-white dark:hover:bg-white dark:hover:text-black dark:uppercase dark:tracking-widest dark:shadow-none"
                 >
-                  <LogOut size={16} strokeWidth={1.5} />
+                  <LogOut size={16} strokeWidth={2} />
                   <span className="hidden sm:inline">Logout</span>
                 </button>
               </div>
@@ -120,7 +125,7 @@ export default function DashboardLayout({
         </nav>
 
         {/* Main Content Area */}
-        <main className="max-w-7xl mx-auto relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 p-6">
+        <main className="max-w-7xl mx-auto relative z-10 animate-in fade-in slide-in-from-bottom-4 duration-500 p-6 pt-8">
           {children}
         </main>
       </div>

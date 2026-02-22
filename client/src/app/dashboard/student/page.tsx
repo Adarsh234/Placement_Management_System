@@ -94,7 +94,7 @@ export default function StudentDashboard() {
         confirmButtonColor: '#10b981',
         customClass: {
           popup:
-            'rounded-2xl border border-stone-200 dark:bg-[#0A0A0A] dark:border-white/20 dark:text-white dark:rounded-none',
+            'rounded-3xl border border-stone-200 dark:bg-black/80 dark:backdrop-blur-2xl dark:border-white/20 dark:text-white dark:rounded-none',
           title: 'uppercase tracking-widest font-bold',
           confirmButton:
             'dark:bg-white dark:text-black dark:rounded-none font-bold',
@@ -110,7 +110,7 @@ export default function StudentDashboard() {
         confirmButtonColor: '#f59e0b',
         customClass: {
           popup:
-            'rounded-2xl border border-stone-200 dark:bg-[#0A0A0A] dark:border-white/20 dark:text-white dark:rounded-none',
+            'rounded-3xl border border-stone-200 dark:bg-black/80 dark:backdrop-blur-2xl dark:border-white/20 dark:text-white dark:rounded-none',
           title: 'uppercase tracking-widest font-bold',
           confirmButton:
             'dark:bg-white dark:text-black dark:rounded-none font-bold',
@@ -148,7 +148,7 @@ export default function StudentDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
     } catch (err) {
@@ -160,7 +160,7 @@ export default function StudentDashboard() {
         color: '#1c1917',
         customClass: {
           popup:
-            'dark:bg-[#0A0A0A] dark:text-white dark:border-white/20 dark:rounded-none',
+            'dark:bg-black/80 dark:backdrop-blur-md dark:text-white dark:border-white/20 dark:rounded-none',
         },
       })
     } finally {
@@ -169,17 +169,32 @@ export default function StudentDashboard() {
   }
 
   return (
-    // MAIN CONTAINER: Light Stone vs Dark Deep Charcoal
+    // MAIN CONTAINER
     <div
-      className="min-h-screen font-sans relative transition-colors duration-300 
+      className="min-h-screen font-sans relative transition-colors duration-300
       bg-stone-50 text-stone-900 
       dark:bg-[#050505] dark:text-white"
     >
+      {/* --- Global Background Image & Cinematic Glass Effects --- */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        {/* Base Image */}
+        <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-40 transition-opacity duration-700" />
+        {/* Dark Vignette / Cinematic Fade */}
+        <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+        <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/60" />
+        {/* Premium Noise Texture */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
+      </div>
+
+      {/* Background Spotlights for depth */}
+      <div className="fixed top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+      <div className="fixed bottom-0 right-1/4 w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
+
       {/* Header Section */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 p-8 pb-0">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 p-8 pb-0 relative z-10">
         <div>
           <h1
-            className="text-3xl font-bold flex items-center gap-3 transition-colors
+            className="text-3xl font-black flex items-center gap-3 transition-colors drop-shadow-sm
             text-stone-800 
             dark:text-white dark:uppercase dark:tracking-tighter"
           >
@@ -193,7 +208,7 @@ export default function StudentDashboard() {
           <p
             className="mt-1 transition-colors
             text-stone-500 
-            dark:text-neutral-500 dark:uppercase dark:tracking-widest dark:text-xs"
+            dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-xs"
           >
             Browse and apply to campus placement drives.
           </p>
@@ -204,9 +219,9 @@ export default function StudentDashboard() {
           <button
             onClick={() => setIsProfileOpen(true)}
             className="px-6 py-3 border flex items-center gap-3 transition-all group shadow-sm
-              rounded-xl bg-white border-stone-200 hover:border-emerald-500/50 hover:shadow-lg
-              /* Dark: Sharp, Ghost */
-              dark:rounded-none dark:bg-transparent dark:border-white/20 dark:hover:bg-white/5 dark:hover:border-white/50 dark:shadow-none"
+              rounded-xl bg-white/70 backdrop-blur-md border-stone-200 hover:border-emerald-500/50 hover:shadow-lg
+              /* Dark: Sharp, Deep Glass */
+              dark:rounded-none dark:bg-black/40 dark:backdrop-blur-xl dark:border-white/20 dark:hover:bg-white/10 dark:hover:border-white/50 dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
           >
             <div
               className="p-2 transition-colors
@@ -218,9 +233,9 @@ export default function StudentDashboard() {
             </div>
             <div className="text-left">
               <p
-                className="text-xs font-bold uppercase tracking-wide transition-colors
+                className="text-[10px] font-bold uppercase tracking-widest transition-colors
                   text-stone-400 group-hover:text-stone-500
-                  dark:text-neutral-500 dark:group-hover:text-white dark:tracking-widest"
+                  dark:text-neutral-400 dark:group-hover:text-white"
               >
                 My Account
               </p>
@@ -245,8 +260,8 @@ export default function StudentDashboard() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 backdrop-blur-md
-                bg-stone-900/20 dark:bg-black/80"
+              className="fixed inset-0 z-40 backdrop-blur-xl
+                bg-stone-900/20 dark:bg-black/60"
               onClick={() => setIsProfileOpen(false)}
             />
             {/* Modal */}
@@ -256,8 +271,8 @@ export default function StudentDashboard() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="fixed inset-0 m-auto z-50 w-full max-w-lg h-fit border shadow-2xl overflow-hidden
                 rounded-2xl bg-white border-stone-200
-                /* Dark: Sharp, Deep Charcoal */
-                dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/20 dark:shadow-none"
+                /* Dark: Sharp, Deep Glass Charcoal */
+                dark:rounded-none dark:bg-black/60 dark:backdrop-blur-2xl dark:border-white/20 dark:shadow-[0_8px_32px_rgba(0,0,0,0.8)]"
             >
               <div
                 className="p-6 border-b flex justify-between items-center
@@ -279,7 +294,7 @@ export default function StudentDashboard() {
               <form onSubmit={handleUpdateProfile} className="p-6 space-y-6">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-wide text-stone-500 dark:text-neutral-500 dark:text-xs">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-400">
                       Roll Number
                     </label>
                     <input
@@ -290,13 +305,13 @@ export default function StudentDashboard() {
                       }
                       className="w-full p-3 border outline-none transition-all
                         rounded-lg bg-stone-50 border-stone-200 focus:ring-2 focus:ring-emerald-500 text-stone-900 placeholder:text-stone-400
-                        /* Dark: Sharp, Wireframe */
-                        dark:rounded-none dark:bg-transparent dark:border-white/20 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-700"
+                        /* Dark: Sharp, Glass Input */
+                        dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-600"
                       placeholder="e.g. 2026CS101"
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-bold uppercase tracking-wide text-stone-500 dark:text-neutral-500 dark:text-xs">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-400">
                       CGPA
                     </label>
                     <input
@@ -309,14 +324,14 @@ export default function StudentDashboard() {
                       }
                       className="w-full p-3 border outline-none transition-all
                         rounded-lg bg-stone-50 border-stone-200 focus:ring-2 focus:ring-emerald-500 text-stone-900 placeholder:text-stone-400
-                        dark:rounded-none dark:bg-transparent dark:border-white/20 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-700"
+                        dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-600"
                       placeholder="e.g. 8.5"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold uppercase tracking-wide text-stone-500 dark:text-neutral-500 dark:text-xs">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-400">
                     Skills
                   </label>
                   <input
@@ -326,13 +341,13 @@ export default function StudentDashboard() {
                     }
                     className="w-full p-3 border outline-none transition-all
                       rounded-lg bg-stone-50 border-stone-200 focus:ring-2 focus:ring-emerald-500 text-stone-900 placeholder:text-stone-400
-                      dark:rounded-none dark:bg-transparent dark:border-white/20 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-700"
+                      dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-600"
                     placeholder="Java, React..."
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-bold uppercase tracking-wide text-stone-500 dark:text-neutral-500 dark:text-xs">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-400">
                     Resume Link
                   </label>
                   <input
@@ -343,7 +358,7 @@ export default function StudentDashboard() {
                     }
                     className="w-full p-3 border outline-none transition-all
                       rounded-lg bg-stone-50 border-stone-200 focus:ring-2 focus:ring-emerald-500 text-stone-900 placeholder:text-stone-400
-                      dark:rounded-none dark:bg-transparent dark:border-white/20 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-700"
+                      dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:focus:border-white dark:focus:ring-0 dark:text-white dark:placeholder:text-neutral-600"
                     placeholder="https://drive.google.com/..."
                   />
                 </div>
@@ -355,7 +370,7 @@ export default function StudentDashboard() {
                     className="w-full py-4 font-bold transition-all flex justify-center items-center gap-2 text-white uppercase tracking-widest text-sm
                       rounded-lg bg-emerald-600 hover:bg-emerald-700
                       /* Dark: Solid White Block */
-                      dark:rounded-none dark:bg-white dark:text-black dark:hover:bg-neutral-200"
+                      dark:rounded-none dark:bg-white dark:text-black dark:hover:bg-neutral-200 dark:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                   >
                     {isSavingProfile ? (
                       <Loader2 className="animate-spin" size={18} />
@@ -372,21 +387,22 @@ export default function StudentDashboard() {
         )}
       </AnimatePresence>
 
-      <div className="p-8 pt-0">
+      <div className="p-8 pt-0 relative z-10">
         {/* Search Bar */}
         <div className="relative max-w-2xl mx-auto mb-12">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <Search
-              className="text-stone-400 dark:text-neutral-500"
+              className="text-stone-400 dark:text-white"
               size={20}
+              strokeWidth={1.5}
             />
           </div>
           <input
             type="text"
             className="w-full pl-12 pr-4 py-4 border outline-none transition-all shadow-lg
-              rounded-full bg-white border-stone-200 shadow-stone-200/50 focus:ring-2 focus:ring-emerald-500 text-stone-800 placeholder:text-stone-400
-              /* Dark: Sharp Wireframe Search */
-              dark:rounded-none dark:bg-transparent dark:border-white/20 dark:shadow-none dark:focus:ring-0 dark:focus:border-white dark:text-white dark:placeholder:text-neutral-600"
+              rounded-full bg-white/70 backdrop-blur-md border-stone-200 shadow-stone-200/50 focus:ring-2 focus:ring-emerald-500 text-stone-800 placeholder:text-stone-400
+              /* Dark: Deep Glass Search */
+              dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] dark:focus:ring-0 dark:focus:border-white dark:text-white dark:placeholder:text-neutral-500"
             placeholder="Search roles or companies..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -396,11 +412,11 @@ export default function StudentDashboard() {
         {/* Error Message */}
         {error && (
           <div
-            className="max-w-4xl mx-auto mb-8 p-4 rounded-lg flex items-center gap-2 border
-            bg-red-50 text-red-600 border-red-200
-            dark:bg-red-900/20 dark:text-red-400 dark:border-red-500/50 dark:rounded-none"
+            className="max-w-4xl mx-auto mb-8 p-4 flex items-center gap-3 text-sm font-bold uppercase tracking-widest border backdrop-blur-md
+            rounded-lg bg-red-50/80 text-red-600 border-red-200
+            dark:bg-red-900/40 dark:text-red-400 dark:border-red-500/50 dark:rounded-none"
           >
-            <AlertCircle size={20} /> {error}
+            <AlertCircle size={20} strokeWidth={1.5} /> {error}
           </div>
         )}
 
@@ -430,9 +446,9 @@ export default function StudentDashboard() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
                 className="p-8 border transition-all duration-300 group relative
-                  rounded-2xl bg-white border-stone-200 hover:border-emerald-300 hover:shadow-xl shadow-sm
-                  /* Dark: Sharp, Minimalist Card */
-                  dark:rounded-none dark:bg-[#0A0A0A] dark:border-white/10 dark:hover:border-white dark:hover:bg-[#0F0F0F] dark:shadow-none"
+                  rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200 hover:border-emerald-300 hover:shadow-xl shadow-sm
+                  /* Dark: Deep Glass Panel */
+                  dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:hover:border-white/40 dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)] dark:hover:-translate-y-1"
               >
                 <div className="flex justify-between items-start mb-6 relative z-10">
                   <div className="flex gap-4">
@@ -440,20 +456,20 @@ export default function StudentDashboard() {
                       className="w-14 h-14 flex items-center justify-center border transition-colors
                         rounded-lg bg-stone-100 text-stone-400 border-stone-200 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-200
                         /* Dark: Sharp Icon Box */
-                        dark:rounded-none dark:bg-black dark:text-white dark:border-white/10 dark:group-hover:bg-white dark:group-hover:text-black dark:group-hover:border-white"
+                        dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/10 dark:group-hover:bg-white dark:group-hover:text-black dark:group-hover:border-white"
                     >
                       <Building size={24} strokeWidth={1.5} />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg leading-tight text-stone-800 dark:text-white dark:uppercase dark:tracking-wide">
+                      <h3 className="font-black text-xl leading-tight text-stone-800 dark:text-white dark:uppercase dark:tracking-wider">
                         {job.title}
                       </h3>
-                      <p className="text-sm font-medium text-stone-500 dark:text-neutral-500 dark:mt-1">
+                      <p className="text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-neutral-400 dark:mt-1">
                         {job.company_name || 'Unnamed Company'}
                       </p>
                       {job.location && (
-                        <div className="flex items-center gap-1 mt-2 text-xs text-stone-400 dark:text-neutral-600 dark:uppercase dark:tracking-wider">
-                          <MapPin size={12} /> {job.location}
+                        <div className="flex items-center gap-1.5 mt-3 text-[10px] font-bold text-stone-400 dark:text-neutral-500 dark:uppercase dark:tracking-widest">
+                          <MapPin size={12} strokeWidth={2} /> {job.location}
                         </div>
                       )}
                     </div>
@@ -462,24 +478,26 @@ export default function StudentDashboard() {
 
                 <div className="flex flex-wrap gap-2 mb-8 relative z-10">
                   <span
-                    className="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold border
-                      rounded-md bg-emerald-50 text-emerald-700 border-emerald-200
-                      /* Dark: Sharp Tag */
-                      dark:rounded-none dark:bg-white/5 dark:text-white dark:border-white/20"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold border uppercase tracking-widest
+                      rounded-full bg-emerald-50 text-emerald-700 border-emerald-200
+                      /* Dark: Sharp Glass Tag */
+                      dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/20"
                   >
-                    <DollarSign size={12} /> {job.salary_package}
+                    <DollarSign size={12} strokeWidth={2} />{' '}
+                    {job.salary_package}
                   </span>
                   <span
-                    className="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold border
-                      rounded-md bg-purple-50 text-purple-700 border-purple-200
-                      /* Dark: Sharp Tag */
-                      dark:rounded-none dark:bg-white/5 dark:text-white dark:border-white/20"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold border uppercase tracking-widest
+                      rounded-full bg-purple-50 text-purple-700 border-purple-200
+                      /* Dark: Sharp Glass Tag */
+                      dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/20"
                   >
-                    <CheckCircle2 size={12} /> CGPA {job.min_cgpa}+
+                    <CheckCircle2 size={12} strokeWidth={2} /> CGPA{' '}
+                    {job.min_cgpa}+
                   </span>
                 </div>
 
-                <p className="text-sm mb-8 line-clamp-2 leading-relaxed relative z-10 text-stone-600 dark:text-neutral-400">
+                <p className="text-sm mb-8 line-clamp-2 leading-relaxed relative z-10 text-stone-600 dark:text-neutral-300">
                   {job.description}
                 </p>
 
@@ -487,19 +505,19 @@ export default function StudentDashboard() {
                   <button
                     onClick={() => handleApply(job.id)}
                     className="flex-1 py-3 font-bold text-sm transition-all shadow-lg
-                        rounded-lg bg-stone-900 text-white hover:bg-emerald-600 shadow-stone-900/10
-                        /* Dark: White Ghost Button */
-                        dark:rounded-none dark:bg-white dark:text-black dark:hover:bg-neutral-200 dark:shadow-none dark:uppercase dark:tracking-widest"
+                        rounded-xl bg-stone-900 text-white hover:bg-emerald-600 shadow-stone-900/10
+                        /* Dark: White Solid Button */
+                        dark:rounded-none dark:bg-white dark:text-black dark:hover:bg-neutral-200 dark:shadow-[0_0_20px_rgba(255,255,255,0.1)] dark:uppercase dark:tracking-widest"
                   >
                     APPLY NOW
                   </button>
                   <button
                     className="p-3 border transition-colors
-                      rounded-lg border-stone-200 text-stone-400 hover:text-stone-900 hover:bg-stone-100
-                      /* Dark: Square Outline Button */
-                      dark:rounded-none dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
+                      rounded-xl border-stone-200 text-stone-400 hover:text-stone-900 hover:bg-white
+                      /* Dark: Square Glass Button */
+                      dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
                   >
-                    <ExternalLink size={18} />
+                    <ExternalLink size={18} strokeWidth={1.5} />
                   </button>
                 </div>
               </motion.div>
