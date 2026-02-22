@@ -37,28 +37,49 @@ export default function ServerWaker() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          // Backdrop: Deep charcoal/black with blur, sharp aesthetic
-          className="fixed inset-0 z-9999 flex flex-col items-center justify-center backdrop-blur-md transition-colors duration-300
-            bg-stone-50/90 dark:bg-[#050505]/95"
+          className="fixed inset-0 z-9999 flex items-center justify-center transition-colors duration-300
+            bg-stone-50 text-stone-900 
+            dark:bg-[#050505] dark:text-white"
         >
-          <div
-            // Card: Sharp edges (rounded-none), thin borders, high negative space (p-12)
-            className="p-12 border w-full max-w-sm mx-4 transition-colors duration-300 flex flex-col items-center text-center shadow-xl
-            bg-white border-stone-200 
-            dark:bg-[#0A0A0A] dark:border-white/10 dark:shadow-none dark:rounded-none"
+          {/* --- Global Background Image & Cinematic Glass Effects --- */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Base Image */}
+            <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-40 transition-opacity duration-700" />
+
+            {/* Dark Vignette / Cinematic Fade */}
+            <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
+            <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/60 backdrop-blur-sm" />
+
+            {/* Premium Noise Texture */}
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
+          </div>
+
+          {/* Background Spotlights for depth */}
+          <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
+          <div className="absolute bottom-0 right-1/4 w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
+
+          {/* --- LOADER CARD --- */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="p-12 border w-full max-w-sm mx-4 transition-all duration-300 flex flex-col items-center text-center relative z-10
+              /* Light: Frosted White */
+              rounded-3xl bg-white/70 backdrop-blur-xl border-stone-200 shadow-2xl
+              /* Dark: Deep Glass Panel */
+              dark:rounded-3xl dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
           >
             <div className="relative mb-8">
-              {/* Removed soft glows for a cleaner, stark look */}
               <Loader2
                 className="w-10 h-10 animate-spin relative z-10 transition-colors duration-300
-                text-stone-900 dark:text-white"
-                strokeWidth={1.5} // Thinner stroke for elegance
+                text-emerald-600 dark:text-emerald-400"
+                strokeWidth={1.5}
               />
             </div>
 
             {/* Typography: Geometric, Uppercase, Widely Spaced */}
             <h3
-              className="text-lg font-bold mb-4 uppercase tracking-[0.25em] transition-colors duration-300
+              className="text-lg font-black mb-4 uppercase tracking-[0.25em] transition-colors duration-300
               text-stone-900 dark:text-white"
             >
               System Waking
@@ -66,25 +87,25 @@ export default function ServerWaker() {
 
             {/* Description: High contrast, slightly smaller/technical feel */}
             <p
-              className="text-xs font-medium leading-relaxed max-w-70 uppercase tracking-wide transition-colors duration-300
+              className="text-xs font-bold leading-relaxed max-w-[70%] uppercase tracking-widest transition-colors duration-300
               text-stone-500 dark:text-neutral-400"
             >
-              Initializing server instance.
+              Initializing instance.
               <br />
-              Estimated wait: 30-50 seconds.
+              Estimated wait: 30-50s.
             </p>
 
             {/* Progress Bar: Sharp edges, thin line, high contrast */}
             <div
-              className="mt-10 w-full h-0.5 overflow-hidden transition-colors duration-300
-              bg-stone-200 dark:bg-neutral-800 rounded-none"
+              className="mt-10 w-full h-px overflow-hidden transition-colors duration-300
+              bg-stone-300 dark:bg-white/10 rounded-none"
             >
               <div
                 className="h-full w-0 animate-[progress_40s_ease-in-out_forwards] transition-colors duration-300
-                bg-stone-900 dark:bg-white"
+                bg-emerald-600 dark:bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]"
               />
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
