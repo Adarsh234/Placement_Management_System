@@ -25,7 +25,8 @@ const MySwal = withReactContent(Swal)
 
 export default function CompanyDashboard() {
   const [activeTab, setActiveTab] = useState('list')
-  const [myJobs, setMyJobs] = useState<any[]>([])
+  const [allJobs, setAllJobs] = useState<any[]>([]) // Stores all DB jobs
+  const [myJobs, setMyJobs] = useState<any[]>([]) // Stores only THIS company's jobs
   const [applicants, setApplicants] = useState<any[]>([])
   const [selectedJob, setSelectedJob] = useState<number | null>(null)
   const [selectedJobTitle, setSelectedJobTitle] = useState('')
@@ -53,8 +54,20 @@ export default function CompanyDashboard() {
     fetchProfile()
   }, [])
 
+  // FILTERING LOGIC: Only show jobs that belong to the current company
+  useEffect(() => {
+    if (profile.company_name) {
+      const filteredJobs = allJobs.filter(
+        (job) => job.company_name === profile.company_name,
+      )
+      setMyJobs(filteredJobs)
+    } else {
+      setMyJobs([])
+    }
+  }, [allJobs, profile.company_name])
+
   const fetchJobs = () => {
-    API.get('/jobs').then((res) => setMyJobs(res.data))
+    API.get('/jobs').then((res) => setAllJobs(res.data))
   }
 
   const fetchProfile = () => {

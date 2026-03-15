@@ -17,6 +17,7 @@ import {
   Save,
   Loader2,
   MapPin,
+  Clock,
 } from 'lucide-react'
 
 const MySwal = withReactContent(Swal)
@@ -27,6 +28,11 @@ export default function StudentDashboard() {
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  // Greeting & Name State
+  const [studentName, setStudentName] = useState('Student')
+  const [greeting, setGreeting] = useState('Welcome back')
+  const [currentDate, setCurrentDate] = useState('')
 
   // Profile State
   const [isProfileOpen, setIsProfileOpen] = useState(false)
@@ -39,6 +45,24 @@ export default function StudentDashboard() {
   })
 
   useEffect(() => {
+    // Set time-based greeting
+    const hour = new Date().getHours()
+    if (hour < 12) setGreeting('Good Morning')
+    else if (hour < 18) setGreeting('Good Afternoon')
+    else setGreeting('Good Evening')
+
+    setCurrentDate(
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      }),
+    )
+
+    // Check localStorage for the user's name if saved during login
+    const storedName = localStorage.getItem('userName')
+    if (storedName) setStudentName(storedName)
+
     loadJobs()
     fetchProfile()
   }, [])
@@ -78,6 +102,8 @@ export default function StudentDashboard() {
           cgpa: data.cgpa || '',
           skills: data.skills ? data.skills.join(', ') : '',
         })
+        // If the backend returns full_name, we can use it to override localStorage
+        if (data.full_name) setStudentName(data.full_name)
       })
       .catch((err) => console.error('Failed to fetch profile', err))
   }
@@ -191,22 +217,24 @@ export default function StudentDashboard() {
       <div className="fixed bottom-0 right-1/4 w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-purple-500/10 dark:bg-blue-600/10 z-1" />
 
       {/* Header Section */}
-      <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 p-8 pb-0 relative z-10">
+      <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10 p-8 pb-0 relative z-10">
         <div>
+          {/* Dynamic Date & Time Greeting */}
+          <p className="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest text-xs mb-2 flex items-center gap-2 drop-shadow-sm">
+            <Clock size={14} strokeWidth={2} /> {currentDate}
+          </p>
           <h1
-            className="text-3xl font-black flex items-center gap-3 transition-colors drop-shadow-sm
+            className="text-3xl md:text-4xl font-black transition-colors drop-shadow-sm
             text-stone-800 
             dark:text-white dark:uppercase dark:tracking-tighter"
           >
-            <Briefcase
-              className="transition-colors text-emerald-600 dark:text-white"
-              size={32}
-              strokeWidth={1.5}
-            />
-            Student Portal
+            {greeting},{' '}
+            <span className="text-emerald-600 dark:text-emerald-400">
+              {studentName}
+            </span>
           </h1>
           <p
-            className="mt-1 transition-colors
+            className="mt-2 transition-colors
             text-stone-500 
             dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-xs"
           >
@@ -454,7 +482,7 @@ export default function StudentDashboard() {
                   <div className="flex gap-4">
                     <div
                       className="w-14 h-14 flex items-center justify-center border transition-colors
-                        rounded-lg bg-stone-100 text-stone-400 border-stone-200 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-200
+                        rounded-xl bg-stone-100 text-stone-400 border-stone-200 group-hover:bg-emerald-50 group-hover:text-emerald-600 group-hover:border-emerald-200
                         /* Dark: Sharp Icon Box */
                         dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/10 dark:group-hover:bg-white dark:group-hover:text-black dark:group-hover:border-white"
                     >
@@ -483,8 +511,7 @@ export default function StudentDashboard() {
                       /* Dark: Sharp Glass Tag */
                       dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/20"
                   >
-                    <DollarSign size={12} strokeWidth={2} />{' '}
-                    {job.salary_package}
+                    {job.salary_package} LPA
                   </span>
                   <span
                     className="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-bold border uppercase tracking-widest
