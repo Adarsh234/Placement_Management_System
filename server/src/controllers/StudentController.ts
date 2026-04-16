@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { pool } from '../config/db'
 import { AuthRequest } from '../middleware/authMiddleware'
 
-// 1. Get Student Profile (Resume Link)
+// 1. Get Student Profile
 export const getProfile = async (req: AuthRequest, res: Response) => {
   const userId = req.user?.id
   try {
@@ -13,7 +13,7 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
     if (student.rows.length === 0)
       return res.status(404).json({ message: 'Student not found' })
 
-    // Return the profile data
+    // Return the profile data (Since it's SELECT *, the new fields will be included automatically)
     res.json(student.rows[0])
   } catch (err) {
     console.error(err)
@@ -21,17 +21,26 @@ export const getProfile = async (req: AuthRequest, res: Response) => {
   }
 }
 
-// 2. Update Resume Link
+// 2. Update Profile (Now includes course, semester, and backlogs)
 export const updateProfile = async (req: AuthRequest, res: Response) => {
-  const { resumeUrl, rollNumber, cgpa, skills } = req.body
+  // Destructure the new fields from the request body
+  const { resumeUrl, rollNumber, cgpa, skills, course, semester, backlogs } =
+    req.body
   const userId = req.user?.id
 
   try {
+    // Update the SQL query to include the new columns
     await pool.query(
       `UPDATE students 
-       SET resume_url = $1, roll_number = $2, cgpa = $3, skills = $4
-       WHERE user_id = $5`,
-      [resumeUrl, rollNumber, cgpa, skills, userId],
+       SET resume_url = $1, 
+           roll_number = $2, 
+           cgpa = $3, 
+           skills = $4, 
+           course = $5, 
+           semester = $6, 
+           backlogs = $7
+       WHERE user_id = $8`,
+      [resumeUrl, rollNumber, cgpa, skills, course, semester, backlogs, userId],
     )
     res.json({ message: 'Profile updated successfully' })
   } catch (err) {
@@ -40,6 +49,7 @@ export const updateProfile = async (req: AuthRequest, res: Response) => {
   }
 }
 
+// 3. Verify Student
 export const verifyStudent = async (req: AuthRequest, res: Response) => {
   const { studentId } = req.params
   const { isVerified } = req.body // true or false

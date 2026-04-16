@@ -27,13 +27,23 @@ export const applyForJob = async (req: AuthRequest, res: Response) => {
   }
 }
 
-// 2. Company Views Applicants for a Job
+// 2. Company Views Applicants for a Job (UPDATED with new fields)
 export const getJobApplicants = async (req: AuthRequest, res: Response) => {
   const { jobId } = req.params
   try {
+    // ADDED: s.course, s.semester, s.backlogs to the SELECT query
     const applicants = await pool.query(
       `
-      SELECT s.full_name, s.cgpa, s.skills, s.resume_url, a.status, a.id as application_id
+      SELECT 
+        s.full_name, 
+        s.cgpa, 
+        s.skills, 
+        s.resume_url, 
+        s.course, 
+        s.semester, 
+        s.backlogs, 
+        a.status, 
+        a.id as application_id
       FROM applications a
       JOIN students s ON a.student_id = s.id
       WHERE a.job_id = $1
@@ -46,9 +56,9 @@ export const getJobApplicants = async (req: AuthRequest, res: Response) => {
   }
 }
 
-// 3. Company Updates Status (Select/Reject) -> NOW SENDS EMAIL
+// 3. Company Updates Status (Multi-Stage Pipeline) -> NOW SENDS EMAILS FOR ALL STAGES
 export const updateStatus = async (req: AuthRequest, res: Response) => {
-  const { applicationId, status } = req.body // status = 'SELECTED' or 'REJECTED'
+  const { applicationId, status } = req.body // e.g. 'SHORTLISTED', 'INTERVIEW', 'SELECTED', etc.
 
   try {
     // 1. Update the status in the database
@@ -80,8 +90,8 @@ export const updateStatus = async (req: AuthRequest, res: Response) => {
     if (details.rows.length > 0) {
       const { email, full_name, title } = details.rows[0]
 
-      // Send email if status is decisive (Selected/Rejected)
-      if (status === 'SELECTED' || status === 'REJECTED') {
+      // Send email for all pipeline stages (skip if they just move it back to 'PENDING')
+      if (status !== 'PENDING') {
         sendStatusEmail(email, status, title, full_name)
       }
     }
@@ -90,5 +100,38 @@ export const updateStatus = async (req: AuthRequest, res: Response) => {
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: 'Error updating status' })
+  }
+}
+
+// 4. NEW: Get All Jobs a Student Has Applied For (For "Already Applied" button logic)
+export const getStudentApplications = async (
+  req: AuthRequest,
+  res: Response,
+) => {
+  const userId = req.user?.id
+
+  try {
+    // First, find the student's internal ID using their Auth User ID
+    const student = await pool.query(
+      'SELECT id FROM students WHERE user_id = $1',
+      [userId],
+    )
+
+    // If they haven't set up a profile yet, they couldn't have applied to anything
+    if (student.rows.length === 0) {
+      return res.json([])
+    }
+
+    // Now get all application records for that student
+    const applications = await pool.query(
+      `SELECT job_id FROM applications WHERE student_id = $1`,
+      [student.rows[0].id],
+    )
+
+    // This returns an array like: [ { job_id: 1 }, { job_id: 4 } ]
+    res.json(applications.rows)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ message: 'Server error fetching applications' })
   }
 }

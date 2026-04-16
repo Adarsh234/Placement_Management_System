@@ -18,6 +18,8 @@ import {
   List,
   Building,
   ArrowLeft,
+  Clock,
+  RefreshCw,
 } from 'lucide-react'
 
 const MySwal = withReactContent(Swal)
@@ -36,7 +38,6 @@ const itemVariants = {
   visible: { y: 0, opacity: 1 },
 }
 
-// NEW: Proper variant for the tabs so children animations aren't broken on remount
 const tabVariants = {
   hidden: { opacity: 0, y: 10 },
   visible: {
@@ -54,6 +55,7 @@ export default function AdminDashboard() {
   >('overview')
 
   // Data States
+  const [adminName, setAdminName] = useState('Admin')
   const [stats, setStats] = useState({
     jobs: 0,
     students: 0,
@@ -73,36 +75,68 @@ export default function AdminDashboard() {
 
   // UI States
   const [loading, setLoading] = useState(true)
+  const [isRefreshing, setIsRefreshing] = useState(false)
   const [maintenanceMode, setMaintenanceMode] = useState(false)
 
+  // Time & Greeting Logic
+  const [greeting, setGreeting] = useState('Welcome back')
+  const [currentDate, setCurrentDate] = useState('')
+
   useEffect(() => {
-    fetchStats()
-    fetchStudents()
-    fetchAllJobs()
+    // Set time-based greeting
+    const hour = new Date().getHours()
+    if (hour < 12) setGreeting('Good Morning')
+    else if (hour < 18) setGreeting('Good Afternoon')
+    else setGreeting('Good Evening')
+
+    setCurrentDate(
+      new Date().toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      }),
+    )
+
+    // Check localStorage for the user's name if saved during login
+    const storedName = localStorage.getItem('userName')
+    if (storedName) setAdminName(storedName)
+
+    loadAllData()
   }, [])
 
-  const fetchStats = () => {
-    API.get('/admin/stats')
-      .then((res) => {
-        setStats(res.data)
-        setLoading(false)
-      })
-      .catch((err) => {
-        console.error('Failed to load admin stats', err)
-        setLoading(false)
-      })
+  const loadAllData = async () => {
+    setIsRefreshing(true)
+    await Promise.all([fetchStats(), fetchStudents(), fetchAllJobs()])
+    setIsRefreshing(false)
   }
 
-  const fetchStudents = () => {
-    API.get('/student/all')
-      .then((res) => setStudents(res.data))
-      .catch((err) => console.error('Failed to fetch students', err))
+  const fetchStats = async () => {
+    try {
+      const res = await API.get('/admin/stats')
+      setStats(res.data)
+      setLoading(false)
+    } catch (err) {
+      console.error('Failed to load admin stats', err)
+      setLoading(false)
+    }
   }
 
-  const fetchAllJobs = () => {
-    API.get('/jobs')
-      .then((res) => setAllJobs(res.data))
-      .catch((err) => console.error('Failed to fetch all jobs', err))
+  const fetchStudents = async () => {
+    try {
+      const res = await API.get('/student/all')
+      setStudents(res.data)
+    } catch (err) {
+      console.error('Failed to fetch students', err)
+    }
+  }
+
+  const fetchAllJobs = async () => {
+    try {
+      const res = await API.get('/jobs')
+      setAllJobs(res.data)
+    } catch (err) {
+      console.error('Failed to fetch all jobs', err)
+    }
   }
 
   const toggleVerification = async (
@@ -225,10 +259,12 @@ export default function AdminDashboard() {
     }
 
     let csvContent = 'data:text/csv;charset=utf-8,'
-    csvContent += 'ID,Full Name,Email,Roll Number,CGPA,Verified\n'
+    // Updated CSV headers
+    csvContent +=
+      'ID,Full Name,Email,Roll Number,Course,Semester,CGPA,Verified\n'
 
     students.forEach((s) => {
-      const row = `${s.id},"${s.full_name}","${s.email || ''}","${s.roll_number || ''}","${s.cgpa || ''}",${s.is_verified ? 'Yes' : 'No'}`
+      const row = `${s.id},"${s.full_name}","${s.email || ''}","${s.roll_number || ''}","${s.course || ''}","${s.semester || ''}","${s.cgpa || ''}",${s.is_verified ? 'Yes' : 'No'}`
       csvContent += row + '\n'
     })
 
@@ -293,6 +329,12 @@ export default function AdminDashboard() {
     }
   }
 
+  // Define tabs for the sliding animation
+  const tabs = [
+    { id: 'overview', label: 'Dashboard', icon: Activity },
+    { id: 'jobs', label: 'Applications', icon: Building },
+  ]
+
   return (
     // MAIN CONTAINER
     <div
@@ -302,18 +344,14 @@ export default function AdminDashboard() {
     >
       {/* --- Global Background Image & Cinematic Glass Effects --- */}
       <div className="fixed inset-0 z-0 pointer-events-none">
-        {/* Base Image */}
         <div className="absolute inset-0 bg-[url('/photos/png.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-40 transition-opacity duration-700" />
-        {/* Dark Vignette / Cinematic Fade */}
         <div className="absolute inset-0 bg-linear-to-t from-stone-100 via-stone-50/80 to-transparent dark:from-[#050505] dark:via-[#050505]/80 dark:to-transparent" />
         <div className="absolute inset-0 bg-stone-50/50 dark:bg-[#050505]/60" />
-        {/* Premium Noise Texture */}
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.06] dark:opacity-[0.08] mix-blend-overlay" />
       </div>
 
-      {/* Background Spotlights for depth */}
       <div className="fixed top-0 left-1/4 w-96 h-96 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-emerald-500/20 dark:bg-emerald-500/10 z-1" />
-      <div className="fixed bottom-0 right-1/4 w-120px h-120px rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-blue-500/10 dark:bg-white/5 z-1" />
+      <div className="fixed bottom-0 right-1/4 w-120 h-120 rounded-full blur-[128px] pointer-events-none transition-colors duration-500 bg-blue-500/10 dark:bg-white/5 z-1" />
 
       <motion.div
         initial="hidden"
@@ -322,53 +360,79 @@ export default function AdminDashboard() {
         className="space-y-8 relative z-10"
       >
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 border-b border-stone-200 dark:border-white/10 pb-6">
           <div>
-            <h1 className="text-3xl font-black transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-tighter drop-shadow-sm">
-              Admin Overview
+            <p className="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-widest text-xs mb-2 flex items-center gap-2 drop-shadow-sm">
+              <Clock size={14} strokeWidth={2} /> {currentDate}
+            </p>
+            <h1 className="text-3xl md:text-4xl font-black transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-tighter drop-shadow-sm">
+              {greeting},{' '}
+              <span className="text-blue-600 dark:text-neutral-400">
+                {adminName}
+              </span>
             </h1>
-            <p className="mt-1 transition-colors text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-xs">
-              Real-time system data and management.
+            <p className="mt-2 transition-colors text-stone-500 dark:text-neutral-400 dark:uppercase dark:tracking-widest dark:text-xs">
+              Here is what's happening across the platform today.
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            {/* Tab Toggle */}
+            {/* Refresh Button */}
+            <button
+              onClick={loadAllData}
+              disabled={isRefreshing}
+              className="p-2.5 transition-all relative group border shadow-sm
+                rounded-xl bg-white border-stone-200 text-stone-500 hover:text-stone-800 hover:bg-stone-50
+                dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-400 dark:hover:bg-white dark:hover:text-black dark:shadow-none disabled:opacity-50"
+            >
+              <RefreshCw
+                size={18}
+                strokeWidth={1.5}
+                className={isRefreshing ? 'animate-spin' : ''}
+              />
+            </button>
+
+            {/* Sliding Tab Toggle */}
             <div
-              className="p-1 border shadow-sm flex flex-wrap gap-1 transition-colors
+              className="p-1 border shadow-sm flex flex-wrap gap-1 transition-colors relative
               rounded-xl bg-white/70 backdrop-blur-md border-stone-200 
-              /* Dark: Sharp Glass Container */
               dark:rounded-none dark:bg-black/40 dark:backdrop-blur-xl dark:border-white/20 dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
             >
-              <button
-                onClick={() => setActiveTab('overview')}
-                className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all 
-                  ${
-                    activeTab === 'overview'
-                      ? 'rounded-lg bg-blue-100 text-blue-700 dark:rounded-none dark:bg-white dark:text-black'
-                      : 'rounded-lg text-stone-500 hover:bg-stone-100 dark:rounded-none dark:text-neutral-400 dark:hover:text-white dark:hover:bg-white/5'
-                  }`}
-              >
-                <Activity size={16} strokeWidth={2} /> Dashboard
-              </button>
-              <button
-                onClick={() => setActiveTab('jobs')}
-                className={`flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all 
-                  ${
-                    activeTab === 'jobs' || activeTab === 'applicants'
-                      ? 'rounded-lg bg-blue-100 text-blue-700 dark:rounded-none dark:bg-white dark:text-black'
-                      : 'rounded-lg text-stone-500 hover:bg-stone-100 dark:rounded-none dark:text-neutral-400 dark:hover:text-white dark:hover:bg-white/5'
-                  }`}
-              >
-                <Building size={16} strokeWidth={2} /> Applications
-              </button>
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`relative px-4 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors z-10 
+                    ${
+                      activeTab === tab.id ||
+                      (tab.id === 'jobs' && activeTab === 'applicants')
+                        ? 'text-blue-800 dark:text-black'
+                        : 'text-stone-500 hover:text-stone-800 dark:text-neutral-400 dark:hover:text-white'
+                    }`}
+                >
+                  {(activeTab === tab.id ||
+                    (tab.id === 'jobs' && activeTab === 'applicants')) && (
+                    <motion.div
+                      layoutId="adminActiveTab"
+                      className="absolute inset-0 bg-blue-100 rounded-lg dark:bg-white dark:rounded-none -z-10"
+                      transition={{
+                        type: 'spring',
+                        stiffness: 400,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                  <span className="relative z-20 flex items-center gap-2">
+                    <tab.icon size={16} strokeWidth={2} /> {tab.label}
+                  </span>
+                </button>
+              ))}
             </div>
 
             {/* System Status Label */}
             <div
-              className={`flex items-center gap-2 px-4 py-2 text-xs font-bold border transition-all backdrop-blur-md shadow-sm
+              className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold border transition-all backdrop-blur-md shadow-sm
                 rounded-xl ${maintenanceMode ? 'bg-red-50 text-red-600 border-red-200' : 'bg-emerald-50 text-emerald-600 border-emerald-200'}
-                /* Dark: Sharp Glass Badge */
                 dark:rounded-none ${maintenanceMode ? 'dark:bg-red-900/40 dark:text-red-400 dark:border-red-500/50' : 'dark:bg-white/10 dark:text-white dark:border-white/20'}`}
             >
               <Server size={16} strokeWidth={2} />
@@ -436,7 +500,6 @@ export default function AdminDashboard() {
                   variants={itemVariants}
                   className="lg:col-span-2 border overflow-hidden h-fit shadow-xl transition-all duration-300
                     rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200 
-                    /* Dark: Deep Glass Panel */
                     dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
                 >
                   <div
@@ -465,7 +528,6 @@ export default function AdminDashboard() {
                         onClick={handleGenerateReport}
                         className="flex items-center gap-2 px-4 py-2 text-xs font-bold transition-all border shadow-sm
                           rounded-lg bg-stone-50 border-stone-200 text-stone-600 hover:bg-white hover:shadow-md
-                          /* Dark: Sharp Ghost Button */
                           dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black dark:uppercase dark:tracking-widest"
                       >
                         <Download size={14} strokeWidth={2} /> EXPORT CSV
@@ -473,7 +535,6 @@ export default function AdminDashboard() {
                       <div
                         className="px-4 py-2 text-xs font-bold flex items-center border shadow-sm
                         rounded-lg bg-blue-50 text-blue-600 border-blue-200
-                        /* Dark: Sharp Glass Label */
                         dark:rounded-none dark:bg-white/10 dark:backdrop-blur-md dark:text-white dark:border-white/20 tracking-widest"
                       >
                         {students.length} STUDENTS
@@ -491,6 +552,9 @@ export default function AdminDashboard() {
                         <tr>
                           <th className="p-4">Name</th>
                           <th className="p-4">Roll No</th>
+                          {/* ADDED COURSE AND SEMESTER */}
+                          <th className="p-4">Course</th>
+                          <th className="p-4">Sem</th>
                           <th className="p-4">CGPA</th>
                           <th className="p-4">Status</th>
                           <th className="p-4 text-right">Action</th>
@@ -500,7 +564,7 @@ export default function AdminDashboard() {
                         {students.length === 0 && (
                           <tr>
                             <td
-                              colSpan={5}
+                              colSpan={7}
                               className="p-8 text-center text-stone-400 dark:text-neutral-500 dark:uppercase dark:text-xs dark:tracking-widest"
                             >
                               No students registered yet.
@@ -517,6 +581,12 @@ export default function AdminDashboard() {
                             </td>
                             <td className="p-4 font-mono text-xs">
                               {student.roll_number || '-'}
+                            </td>
+                            <td className="p-4 font-mono text-xs">
+                              {student.course || '-'}
+                            </td>
+                            <td className="p-4 font-mono text-xs">
+                              {student.semester || '-'}
                             </td>
                             <td className="p-4 font-mono text-xs">
                               {student.cgpa || '-'}
@@ -552,7 +622,6 @@ export default function AdminDashboard() {
                                 }
                                 className={`px-4 py-2 text-xs font-bold transition-all border uppercase tracking-widest
                                   rounded-lg shadow-sm
-                                  /* Dark: Sharp Buttons */
                                   dark:rounded-none dark:shadow-none
                                   ${
                                     student.is_verified
@@ -575,7 +644,6 @@ export default function AdminDashboard() {
                   <div
                     className="border p-8 shadow-xl transition-all duration-300
                     rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200
-                    /* Dark: Deep Glass Panel */
                     dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
                   >
                     <h2 className="text-lg font-bold mb-6 transition-colors text-stone-800 dark:text-white dark:uppercase dark:tracking-widest border-b border-stone-200 dark:border-white/10 pb-4">
@@ -586,7 +654,6 @@ export default function AdminDashboard() {
                         onClick={handleManageUsers}
                         className="w-full flex items-center gap-4 px-5 py-4 transition-all border font-bold text-xs uppercase tracking-widest shadow-sm
                           rounded-xl bg-white border-stone-200 text-stone-600 hover:shadow-md hover:text-stone-900
-                          /* Dark: Sharp Glass Buttons */
                           dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:border-white/10 dark:text-neutral-300 dark:hover:bg-white dark:hover:text-black dark:shadow-none"
                       >
                         <Users size={18} strokeWidth={1.5} /> MANAGE USERS
@@ -614,7 +681,6 @@ export default function AdminDashboard() {
                   <div
                     className={`p-6 border transition-colors duration-300 shadow-xl backdrop-blur-xl
                       rounded-2xl 
-                      /* Dark: Sharp Glass Panel */
                       dark:rounded-none dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]
                       ${
                         maintenanceMode
@@ -659,9 +725,10 @@ export default function AdminDashboard() {
           {activeTab === 'jobs' && (
             <motion.div
               key="jobs"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              variants={tabVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
               className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
             >
               {allJobs.length === 0 && (
@@ -674,7 +741,6 @@ export default function AdminDashboard() {
                   key={job.id}
                   className="border p-6 transition-all duration-300 group relative
                     rounded-2xl shadow-sm bg-white/70 backdrop-blur-xl border-stone-200 hover:shadow-md hover:-translate-y-1
-                    /* Dark: Deep Glass Card */
                     dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:hover:border-white/40 dark:shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
                 >
                   <div className="absolute top-4 right-4 transition-colors text-stone-200 group-hover:text-blue-100 dark:text-white/5 dark:group-hover:text-white/20">
@@ -693,7 +759,6 @@ export default function AdminDashboard() {
                     }
                     className="w-full flex items-center justify-center gap-2 py-3 border transition-colors text-xs font-bold uppercase tracking-widest relative z-10
                       rounded-xl bg-stone-100 text-stone-600 border-stone-200 hover:bg-stone-200 hover:text-stone-900
-                      /* Dark: Glass Outline Button */
                       dark:rounded-none dark:bg-transparent dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
                   >
                     <List size={16} strokeWidth={2} /> VIEW APPLICANTS
@@ -725,7 +790,6 @@ export default function AdminDashboard() {
               <div
                 className="border overflow-hidden shadow-xl
                 rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200
-                /* Dark: Deep Glass Container */
                 dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
               >
                 <div
@@ -746,7 +810,6 @@ export default function AdminDashboard() {
                   <span
                     className="px-3 py-1.5 text-[10px] font-bold border uppercase tracking-widest
                     rounded-full bg-blue-50 text-blue-600 border-blue-200
-                    /* Dark: Sharp Glass Tag */
                     dark:rounded-none dark:bg-white/10 dark:backdrop-blur-md dark:text-white dark:border-white/20"
                   >
                     {jobApplicants.length} CANDIDATES
@@ -762,7 +825,10 @@ export default function AdminDashboard() {
                     >
                       <tr>
                         <th className="p-4">Candidate Name</th>
+                        <th className="p-4">Course</th>
+                        <th className="p-4">Semester</th>
                         <th className="p-4">CGPA</th>
+                        <th className="p-4">Backlogs</th>
                         <th className="p-4">Resume</th>
                         <th className="p-4">Current Status</th>
                       </tr>
@@ -771,7 +837,7 @@ export default function AdminDashboard() {
                       {jobApplicants.length === 0 && (
                         <tr>
                           <td
-                            colSpan={4}
+                            colSpan={7}
                             className="p-8 text-center text-stone-400 dark:text-neutral-600 dark:uppercase dark:text-xs dark:tracking-widest"
                           >
                             No applicants found for this job yet.
@@ -786,12 +852,27 @@ export default function AdminDashboard() {
                           <td className="p-4 font-medium text-stone-900 dark:text-white">
                             {app.full_name}
                           </td>
+                          <td className="p-4 font-mono text-xs text-stone-500 dark:text-neutral-400">
+                            {app.course || '-'}
+                          </td>
+                          <td className="p-4 font-mono text-xs text-stone-500 dark:text-neutral-400">
+                            {app.semester || '-'}
+                          </td>
                           <td className="p-4 font-mono text-xs">{app.cgpa}</td>
+                          <td className="p-4 font-mono text-xs">
+                            {app.backlogs === 0 || !app.backlogs ? (
+                              <span className="text-emerald-500">0</span>
+                            ) : (
+                              <span className="text-red-500 font-bold">
+                                {app.backlogs}
+                              </span>
+                            )}
+                          </td>
                           <td className="p-4">
                             <a
                               href={app.resume_url}
                               target="_blank"
-                              className="flex items-center gap-1.5 hover:underline text-xs font-bold uppercase tracking-widest
+                              className="flex items-center gap-1.5 hover:underline text-[10px] font-bold uppercase tracking-widest
                                 text-blue-600 hover:text-blue-500
                                 dark:text-white dark:hover:text-neutral-300"
                             >
@@ -836,7 +917,6 @@ function StatCard({ title, value, icon, theme, trend }: any) {
     orange: 'bg-orange-50 text-orange-600 border-orange-200',
   }
 
-  // Dark Mode uses unified glass styling, so we don't need the theme colors here.
   const currentLightStyle = lightStyles[theme] || lightStyles.blue
 
   return (
@@ -844,14 +924,12 @@ function StatCard({ title, value, icon, theme, trend }: any) {
       variants={itemVariants}
       className={`p-6 border hover:shadow-xl transition-all duration-300 group
         rounded-2xl bg-white/70 backdrop-blur-xl border-stone-200 shadow-sm
-        /* Dark: Deep Glass Panel */
         dark:rounded-none dark:bg-black/40 dark:backdrop-blur-2xl dark:border-white/10 dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)] dark:hover:border-white/40 dark:hover:-translate-y-1`}
     >
       <div className="flex items-center justify-between mb-6">
         <div
           className={`p-3 border transition-colors
            rounded-xl ${currentLightStyle}
-           /* Dark: Sharp Icon Box, Glassy BG, White Icon */
            dark:rounded-none dark:bg-white/5 dark:backdrop-blur-md dark:text-white dark:border-white/20 `}
         >
           {icon}
